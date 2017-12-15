@@ -10,7 +10,7 @@ $factory->define(App\Product::class, function (Faker $faker) {
 
         'cover_path' => str_after(
             $faker->image(
-                public_path('uploads/product_covers'),
+                PRODUCT_COVERS_DIR,
                 640, 480,
                 'abstract'
             ),
@@ -23,16 +23,16 @@ $factory->define(App\Product::class, function (Faker $faker) {
 
         'sample_path' => str_after(
             $faker->file(
-                public_path('uploads/product_covers'),
-                public_path('uploads/product_samples')
+                PRODUCT_COVERS_DIR,
+                PRODUCT_SAMPLES_DIR
             ),
             public_path().DIRECTORY_SEPARATOR
         ),
 
         'file_path' => str_after(
             $faker->file(
-                public_path('uploads/product_covers'),
-                resource_path('uploads/product_files')
+                PRODUCT_COVERS_DIR,
+                PRODUCT_FILES_DIR
             ),
             resource_path().DIRECTORY_SEPARATOR
         ),
