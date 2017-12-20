@@ -44,4 +44,39 @@ abstract class TestCase extends BaseTestCase
     {
         return factory(Product::class)->create();
     }
+
+    protected function tearDown()
+    {
+        $this->clearProductCoversDir();
+        $this->clearProductSamplesDir();
+        $this->clearProductFilesDir();
+
+        parent::tearDown();
+    }
+
+    protected function clearProductCoversDir()
+    {
+        $this->clearDirectory(PRODUCT_COVERS_DIR);
+    }
+
+    protected function clearProductSamplesDir()
+    {
+        $this->clearDirectory(PRODUCT_SAMPLES_DIR);
+    }
+
+    protected function clearProductFilesDir()
+    {
+        $this->clearDirectory(PRODUCT_FILES_DIR);
+    }
+
+    protected function clearDirectory($dir)
+    {
+        $files = $this->app['files']->files($dir);
+
+        $paths = array_map(function (SplFileInfo $file) {
+            return $file->getRealPath();
+        }, $files);
+
+        $this->app['files']->delete($paths);
+    }
 }
