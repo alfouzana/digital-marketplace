@@ -19,3 +19,6 @@ Route::get('/products', [
     'uses' => 'ProductsController@index'
 ]);
 
+Route::get('/product/{slug}/{product}', [
+    'uses' => 'ProductsController@show'
+]);
