@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        require_once app_path('constants'.DIRECTORY_SEPARATOR.'app.php');
+        require_once base_path('lib'.DIRECTORY_SEPARATOR.'helpers.php');
     }
 
     /**

@@ -56,17 +56,17 @@ abstract class TestCase extends BaseTestCase
 
     protected function clearProductCoversDir()
     {
-        $this->clearDirectory(PRODUCT_COVERS_DIR);
+        $this->clearDirectory(product_covers_path());
     }
 
     protected function clearProductSamplesDir()
     {
-        $this->clearDirectory(PRODUCT_SAMPLES_DIR);
+        $this->clearDirectory(product_samples_path());
     }
 
     protected function clearProductFilesDir()
     {
-        $this->clearDirectory(PRODUCT_FILES_DIR);
+        $this->clearDirectory(product_files_path());
     }
 
     protected function clearDirectory($dir)
