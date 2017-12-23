@@ -7,12 +7,12 @@ function public_uploads_path($path = '')
 
 function product_covers_path()
 {
-    return public_uploads_path('product_covers');
+    return public_uploads_path(app('product_covers_dir'));
 }
 
 function product_samples_path()
 {
-    return public_uploads_path('product_samples');
+    return public_uploads_path(app('product_samples_dir'));
 }
 
 function protected_uploads_path($path = '')
@@ -22,5 +22,5 @@ function protected_uploads_path($path = '')
 
 function product_files_path()
 {
-    return protected_uploads_path('product_files');
+    return protected_uploads_path(app('product_files_dir'));
 }

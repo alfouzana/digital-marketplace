@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->instance('product_covers_dir', 'product_covers');
+        $this->app->instance('product_samples_dir', 'product_samples');
+        $this->app->instance('product_files_dir', 'product_files');
     }
 }
