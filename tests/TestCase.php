@@ -4,15 +4,24 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use App\Product;
-use Symfony\Component\Finder\SplFileInfo;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    protected $resourceDirectories = [
+        'product_covers',
+        'product_samples',
+        'product_files',
+    ];
+
     protected function  setUp()
     {
         parent::setUp();
+
+        $this->registerResourceDirectories();
+
+        $this->createResourceDirectories();
 
         $this->withoutExceptionHandling();
     }
@@ -47,36 +56,36 @@ abstract class TestCase extends BaseTestCase
 
     protected function tearDown()
     {
-        $this->clearProductCoversDir();
-        $this->clearProductSamplesDir();
-        $this->clearProductFilesDir();
+        $this->deleteResourceDirectories();
 
         parent::tearDown();
     }
 
-    protected function clearProductCoversDir()
+    protected function registerResourceDirectories()
     {
-        $this->clearDirectory(product_covers_path());
+        foreach ($this->resourceDirectories as $directory) {
+            $this->app->instance("{$directory}_dir", "tests_{$directory}");
+        }
     }
 
-    protected function clearProductSamplesDir()
+    protected function createResourceDirectories()
     {
-        $this->clearDirectory(product_samples_path());
+        foreach ($this->resourceDirectories as $directory) {
+            $directoryPath = ($directory.'_path')();
+
+            if ($this->app['files']->isDirectory($directoryPath)) {
+                $this->app['files']->deleteDirectory($directoryPath);
+            }
+
+            $this->app['files']->makeDirectory($directoryPath, 0755, true);
+        }
     }
 
-    protected function clearProductFilesDir()
+    protected function deleteResourceDirectories()
     {
-        $this->clearDirectory(product_files_path());
+        foreach ($this->resourceDirectories as $directory) {
+            $this->app['files']->deleteDirectory(($directory.'_path')());
+        }
     }
 
-    protected function clearDirectory($dir)
-    {
-        $files = $this->app['files']->files($dir);
-
-        $paths = array_map(function (SplFileInfo $file) {
-            return $file->getRealPath();
-        }, $files);
-
-        $this->app['files']->delete($paths);
-    }
 }
