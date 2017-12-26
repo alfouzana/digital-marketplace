@@ -12,6 +12,11 @@ class Product extends Model
 {
     use Sluggable, Approvable, SoftDeletes;
 
+    protected $with = [
+        'category',
+        'vendor',
+    ];
+
     public function getRouteKey()
     {
         return Hashids::encode(parent::getRouteKey());
