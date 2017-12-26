@@ -14,7 +14,7 @@ class ProductsTableSeeder extends Seeder
     {
         Product::truncate();
 
-        factory(Product::class, 10)->create()
+        factory(Product::class, 20)->create()
             ->each(function (Product $product) {
                 $product->approve();
             });
