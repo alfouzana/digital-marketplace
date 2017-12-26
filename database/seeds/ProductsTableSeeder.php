@@ -12,6 +12,8 @@ class ProductsTableSeeder extends Seeder
      */
     public function run()
     {
+        Product::truncate();
+
         factory(Product::class, 10)->create()
             ->each(function (Product $product) {
                 $product->approve();
