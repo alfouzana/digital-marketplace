@@ -21,6 +21,8 @@
     </div>
 
     <!-- Scripts -->
+    {{-- Todo: Replace fontawesome-all.js with a custom build --}}
+    <script src="{{ asset('js/fontawesome-all.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
