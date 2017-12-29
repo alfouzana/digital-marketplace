@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
 
             $table->string('title');
 
-            $table->string('slug')->unique();
+            $table->string('slug');
 
             $table->string('cover_path')->nullable();
 
