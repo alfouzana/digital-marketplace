@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Category;
+use App\Product;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -43,5 +45,23 @@ class IndexingProductsTest extends TestCase
 
         $this->get('products')
             ->assertDontSee($product->title);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_filter_products_by_category()
+    {
+        $category = factory(Category::class)->create();
+
+        $productFromCategory = $this->createApprovedProduct([
+            'category_id' => $category->id
+        ]);
+
+        $productNotFromCategory = $this->createApprovedProduct();
+
+        $this->get($category->url())
+            ->assertSee($productFromCategory->title)
+            ->assertDontSee($productNotFromCategory->title);
     }
 }

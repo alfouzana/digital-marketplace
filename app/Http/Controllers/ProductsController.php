@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Category $category)
     {
-        $products = Product::paginate();
+        $query = Product::query();
+
+        if ($category->exists) {
+            $query->where('category_id', $category->id);
+        }
+
+        $products = $query->paginate();
 
         return view('products.index', compact('products'));
     }
