@@ -19,3 +19,15 @@
         </div>
     </div>
 </nav>
+
+<div class="container">
+    <ul class="nav nav-pills">
+        @foreach(\App\Category::all() as $category)
+            <li class="nav-item">
+                <a href="{{ $category->url() }}"
+                   class="nav-link @if(Request::url() == $category->url()) active @endif"
+                >{{ $category->name }}</a>
+            </li>
+        @endforeach
+    </ul>
+</div>
