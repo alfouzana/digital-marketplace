@@ -12,5 +12,28 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+
+        $this->cleanDatabase();
+
+        $this->cleanResourceDirectories();
+
+        factory(\App\Product::class, 20)->create()
+            ->each(function (\App\Product $product) {
+                $product->approve();
+            });
+    }
+
+    protected function cleanDatabase()
+    {
+        \App\Product::truncate();
+        \App\User::truncate();
+        \App\Category::truncate();
+    }
+
+    protected function cleanResourceDirectories()
+    {
+        clean_resource_directory(product_covers_path());
+        clean_resource_directory(product_samples_path());
+        clean_resource_directory(product_files_path());
     }
 }

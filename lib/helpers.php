@@ -24,3 +24,23 @@ function product_files_path()
 {
     return protected_uploads_path(app('product_files_dir'));
 }
+
+/**
+ * @param string $directory
+ * @return bool
+ */
+function clean_resource_directory($directory)
+{
+    if (! app('files')->isDirectory($directory))
+    {
+        throw new InvalidArgumentException("$directory is not a directory.");
+    }
+
+    $files = app('files')->files($directory);
+
+    $paths = array_map(function (SplFileInfo $file) {
+            return $file->getRealPath();
+    }, $files);
+
+    return app('files')->delete($paths);
+}
