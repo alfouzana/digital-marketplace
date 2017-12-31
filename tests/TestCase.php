@@ -26,34 +26,6 @@ abstract class TestCase extends BaseTestCase
         $this->withoutExceptionHandling();
     }
 
-    protected function createApprovedProduct($overrides = [])
-    {
-        $product = $this->createProduct($overrides);
-
-        $product->approve();
-
-        return $product;
-    }
-
-    protected function createRejectedProduct($overrides = [])
-    {
-        $product = $this->createProduct($overrides);
-
-        $product->reject();
-
-        return $product;
-    }
-
-    protected function createPendingProduct($overrides = [])
-    {
-        return $this->createProduct($overrides);
-    }
-
-    protected function createProduct($overrides = [])
-    {
-        return factory(Product::class)->create($overrides);
-    }
-
     protected function tearDown()
     {
         $this->deleteResourceDirectories();

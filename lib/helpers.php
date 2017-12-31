@@ -44,3 +44,33 @@ function clean_resource_directory($directory)
 
     return app('files')->delete($paths);
 }
+
+function create_approved_product($overrides = [], $times = 1)
+{
+    $products = factory(\App\Product::class, $times)->create($overrides);
+
+    $products->each(function (\App\Product $product) {
+        $product->approve();
+    });
+
+    return $times == 1 ? $products[0] : $products;
+}
+
+function create_rejected_product($overrides = [], $times = 1)
+{
+    $products = factory(\App\Product::class, $times)->create($overrides);
+
+    $products->each(function (\App\Product $product) {
+        $product->reject();
+    });
+
+    return $times == 1 ? $products[0] : $products;
+}
+
+function create_pending_product($overrides = [], $times = 1)
+{
+    $products = factory(\App\Product::class, $times)->create($overrides);
+
+    return $times == 1 ? $products[0] : $products;
+}
+

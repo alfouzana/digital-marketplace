@@ -17,10 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->cleanResourceDirectories();
 
-        factory(\App\Product::class, 20)->create()
-            ->each(function (\App\Product $product) {
-                $product->approve();
-            });
+        create_approved_product([], 20);
     }
 
     protected function cleanDatabase()

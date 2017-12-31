@@ -16,7 +16,7 @@ class IndexingProductsTest extends TestCase
      */
     function a_user_can_view_products()
     {
-        $product = $this->createApprovedProduct();
+        $product = create_approved_product();
 
         $this->get('products')
             ->assertSee($product->title);
@@ -27,8 +27,8 @@ class IndexingProductsTest extends TestCase
      */
     public function a_user_can_not_view_non_approved_products()
     {
-        $pendingProduct = $this->createPendingProduct();
-        $rejectedProduct = $this->createRejectedProduct();
+        $pendingProduct = create_pending_product();
+        $rejectedProduct = create_rejected_product();
 
         $this->get('/products')
             ->assertDontSee($pendingProduct->title)
@@ -40,7 +40,7 @@ class IndexingProductsTest extends TestCase
      */
     public function a_user_can_not_view_archived_products()
     {
-        $product = $this->createApprovedProduct();
+        $product = create_approved_product();
         $product->delete();
 
         $this->get('products')
@@ -54,11 +54,11 @@ class IndexingProductsTest extends TestCase
     {
         $category = factory(Category::class)->create();
 
-        $productFromCategory = $this->createApprovedProduct([
+        $productFromCategory = create_approved_product([
             'category_id' => $category->id
         ]);
 
-        $productNotFromCategory = $this->createApprovedProduct();
+        $productNotFromCategory = create_approved_product();
 
         $this->get($category->url())
             ->assertSee($productFromCategory->title)

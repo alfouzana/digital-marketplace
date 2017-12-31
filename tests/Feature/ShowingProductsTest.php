@@ -14,7 +14,7 @@ class ShowingProductsTest extends TestCase
      */
     function a_user_can_view_a_product()
     {
-        $product = $this->createApprovedProduct();
+        $product = create_approved_product();
 
         $this->get($product->url())
             ->assertSee($product->title);
@@ -25,7 +25,7 @@ class ShowingProductsTest extends TestCase
      */
     public function a_user_is_redirected_when_uses_an_incorrect_slug_to_view_a_product()
     {
-        $product = $this->createApprovedProduct();
+        $product = create_approved_product();
         $incorrectSlugUrl = str_replace($product->slug, 'wrong-slug', $product->url());
 
         $this->get($incorrectSlugUrl)
@@ -39,7 +39,7 @@ class ShowingProductsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $product = $this->createApprovedProduct();
+        $product = create_approved_product();
         $url = $product->url();
         $product->forceDelete();
 
@@ -55,8 +55,8 @@ class ShowingProductsTest extends TestCase
         $this->withExceptionHandling();
 
         $nonApprovedProducts = collect([
-            $this->createPendingProduct(),
-            $this->createRejectedProduct()
+            create_pending_product(),
+            create_rejected_product()
         ]);
 
         foreach ($nonApprovedProducts as $nonApprovedProduct) {
@@ -72,7 +72,7 @@ class ShowingProductsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $product = $this->createApprovedProduct();
+        $product = create_approved_product();
         $product->delete();
 
         $this->get($product->url())
