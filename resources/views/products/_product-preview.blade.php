@@ -8,7 +8,7 @@
             <a href="{{ $product->url() }}">{{ $product->title }}</a>
         </h3>
 
-        <a href="#" class="card-link">
+        <a href="{{ $product->category->url() }}" class="card-link">
             <i class="far fa-folder"></i> {{ $product->category->name }}
         </a>
 
