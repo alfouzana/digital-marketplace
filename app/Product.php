@@ -2,13 +2,15 @@
 
 namespace App;
 
+use App\Presenters\ProductPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use McCool\LaravelAutoPresenter\HasPresenter;
 use Mtvs\EloquentApproval\Approvable;
 use Vinkla\Hashids\Facades\Hashids;
 
-class Product extends Model
+class Product extends Model implements HasPresenter
 {
     use Sluggable, Approvable, SoftDeletes;
 
@@ -50,5 +52,15 @@ class Product extends Model
     public function vendor()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return ProductPresenter::class;
     }
 }
