@@ -7,11 +7,11 @@
         <h2>{{ $product->title }}</h2>
         <div class="row">
             <div class="col-lg-8">
-                <img src="{{ asset($product->cover_path) }}"
+                <img src="{{ $product->cover_url }}"
                      alt="Cover" class="img-thumbnail w-100 mb-1">
 
                 <div class="mb-3 d-flex justify-content-between">
-                    <a href="{{ asset($product->sample_path) }}"
+                    <a href="{{ $product->sample_url }}"
                        class="btn btn-outline-info" download
                     >
                         <i class="far fa-download"></i> @lang('Sample')

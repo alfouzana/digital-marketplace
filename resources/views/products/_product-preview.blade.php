@@ -1,6 +1,6 @@
 <article class="card mb-3">
     <img class="card-img-top"
-         src="{{ asset($product->cover_path) }}"
+         src="{{ $product->cover_url }}"
          alt="Cover">
 
     <div class="card-body">

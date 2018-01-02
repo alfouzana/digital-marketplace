@@ -18,6 +18,16 @@ class ProductPresenter extends BasePresenter
         $this->wrappedObject = $resource;
     }
 
+    public function cover_url()
+    {
+        return asset($this->wrappedObject->cover_path);
+    }
+
+    public function sample_url()
+    {
+        return asset($this->wrappedObject->sample_path);
+    }
+
     public function body()
     {
         return new HtmlString(
