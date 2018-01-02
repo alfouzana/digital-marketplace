@@ -29,6 +29,6 @@ class ProductsController extends Controller
             return redirect($product->url(), 301);
         }
 
-        return $product;
+        return view('products.show', compact('product'));
     }
 }
