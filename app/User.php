@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\UserTypes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -26,4 +27,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $typesToHomePaths = [
+        UserTypes::ADMIN => '/admin',
+        UserTypes::VENDOR => '/vendor',
+        UserTypes::CUSTOMER => '/customer'
+    ];
+
+    public function homeUrl()
+    {
+        return url($this->typesToHomePaths[$this->getAttribute('type')]);
+    }
 }
