@@ -26,3 +26,5 @@ Route::get('/category/{category}', [
 Route::get('/product/{slug}/{product}', [
     'uses' => 'ProductsController@show'
 ]);
+
+Auth::routes();
