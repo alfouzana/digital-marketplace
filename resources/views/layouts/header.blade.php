@@ -16,6 +16,39 @@
                     </a>
                 </li>
             </ul>
+
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav navbar-right">
+                <!-- Authentication Links -->
+                @guest
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">@lang('Login')</a>
+                    </li>
+                    <li class="nav-item">
+                        <a  class="nav-link" href="{{ route('register') }}">@lang('Register')</a>
+                    </li>
+                @else
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                           role="button" aria-expanded="false" aria-haspopup="true">
+                            {{ Auth::user()->name }}
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                @lang('Logout')
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                  style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                        </div>
+                    </li>
+                @endguest
+            </ul>
         </div>
     </div>
 </nav>
