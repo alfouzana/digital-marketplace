@@ -1,70 +1,79 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
+@section('title', __('Register'))
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+@section('content')
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-header">
+                    @lang('Register')
+                </div>
+
+                <div class="card-body">
+                    <form id="registration-form"
+                          method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
+                        <div class="form-group row">
+                            <label for="name" class="col-lg-4 col-form-label">
+                                @lang('Name')
+                            </label>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                       id="name" name="name" value="{{ old('name') }}" required autofocus>
 
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
+                                <div class="invalid-feedback">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                        <div class="form-group row">
+                            <label for="email" class="col-lg-4 col-form-label">
+                                @lang('E-Mail Address')
+                            </label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                       id="email" name="email" value="{{ old('email') }}" required>
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                                <div class="invalid-feedback">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
+                        <div class="form-group row">
+                            <label for="password" class="col-lg-4 col-form-label">
+                                @lang('Password')
+                            </label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                            <div class="col-lg-8">
+                                <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                       id="password" name="password" required>
 
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                                <div class="invalid-feedback">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-lg-4 col-form-label">
+                                @lang('Confirm Password')
+                            </label>
 
-                            <div class="col-md-6">
+                            <div class="col-lg-8">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                        <div class="form-group row">
+                            <div class="col-lg-8 offset-lg-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Register
+                                    @lang('Register')
                                 </button>
                             </div>
                         </div>
@@ -73,5 +82,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
