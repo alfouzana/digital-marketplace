@@ -34,4 +34,17 @@ class LoginTest extends TestCase
 
         $this->assertTrue(Auth::check());
     }
+
+    /**
+     * @test
+     */
+    public function a_user_should_be_redirected_to_their_home_after_login()
+    {
+        $user = factory(User::class)->create();
+
+        $this->post('/login', [
+            'email' => $user['email'],
+            'password' => 'secret'
+        ])->assertRedirect($user->homeUrl());
+    }
 }
