@@ -47,4 +47,18 @@ class LoginTest extends TestCase
             'password' => 'secret'
         ])->assertRedirect($user->homeUrl());
     }
+
+    /**
+     * @test
+     */
+    public function an_authenticated_user_should_be_redirected_to_their_home_if_attempts_to_login()
+    {
+        $user = $this->signIn();
+
+        $this->get('/login')
+            ->assertRedirect($user->homeUrl());
+
+        $this->post('/login')
+            ->assertRedirect($user->homeUrl());
+    }
 }

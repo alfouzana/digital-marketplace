@@ -58,6 +58,20 @@ class RegisterTest extends TestCase
 
         $this->assertTrue(Hash::check('secret', $registeredUser->password));
     }
+    
+    /**
+     * @test
+     */
+    public function an_authenticated_user_should_be_redirected_to_their_home_if_attempts_to_register()
+    {
+        $user = $this->signIn();
+
+        $this->get('/register')
+            ->assertRedirect($user->homeUrl());
+
+        $this->register(factory(User::class)->create())
+            ->assertRedirect($user->homeUrl());
+    }
 
     protected function register(User $user)
     {
