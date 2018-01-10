@@ -16,8 +16,7 @@ class LogoutTest extends TestCase
      */
     public function a_user_can_logout()
     {
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->signIn();
 
         $this->post('/logout');
 
@@ -29,8 +28,7 @@ class LogoutTest extends TestCase
      */
     public function a_user_is_redirected_to_home_page_after_logout()
     {
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->signIn();
 
         $this->post('/logout')
             ->assertRedirect('/');

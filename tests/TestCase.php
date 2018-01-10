@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use App\Product;
 
@@ -58,6 +59,15 @@ abstract class TestCase extends BaseTestCase
         foreach ($this->resourceDirectories as $directory) {
             $this->app['files']->deleteDirectory(($directory.'_path')());
         }
+    }
+
+    protected function signIn(User $user = null)
+    {
+        $user = $user ?: factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        return $user;
     }
 
 }
