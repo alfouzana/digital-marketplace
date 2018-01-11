@@ -38,11 +38,7 @@ $factory->define(App\Product::class, function (Faker $faker) {
         ),
 
         'user_id' => function() {
-            $vendor = factory(\App\User::class)->create([
-                'type' => \App\Enums\UserTypes::VENDOR,
-            ]);
-
-            return $vendor->id;
+            return create_vendor_user()->id;
         },
 
         'category_id' => function() {

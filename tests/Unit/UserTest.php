@@ -9,22 +9,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @test
      */
     public function it_can_determine_the_home_url()
     {
-        $adminUser = factory(User::class)->make([
-            'type' => UserTypes::ADMIN,
-        ]);
+        $adminUser = create_admin_user();
 
-        $vendorUser = factory(User::class)->make([
-            'type' => UserTypes::VENDOR,
-        ]);
+        $vendorUser = create_vendor_user();
 
-        $customerUser = factory(User::class)->make([
-            'type' => UserTypes::CUSTOMER,
-        ]);
+        $customerUser = create_customer_user();
 
         $this->assertEquals(url('/admin'), $adminUser->homeUrl());
         $this->assertEquals(url('/vendor'), $vendorUser->homeUrl());
