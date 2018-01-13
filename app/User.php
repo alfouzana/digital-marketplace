@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return url($this->typesToHomePaths[$this->getAttribute('type')]);
     }
+
+    public function isVendor()
+    {
+        return $this->type == UserTypes::VENDOR;
+    }
 }
