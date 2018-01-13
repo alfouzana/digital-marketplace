@@ -23,12 +23,4 @@ class RedirectIfAuthenticated
 
         return $next($request);
     }
-
-    public function an_authenticated_user_will_be_redirected_to_their_home_if_visits_login_page()
-    {
-        $user = $this->signIn();
-
-        $this->get('/login')
-            ->assertRedirect($user->homeUrl());
-    }
 }
