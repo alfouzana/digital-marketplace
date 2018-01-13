@@ -20,6 +20,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
+        // todo: User type should be random between ADMIN | VENDOR | CUSTOMER
         'type' => $faker->boolean ?
             \App\Enums\UserTypes::VENDOR :
             \App\Enums\UserTypes::CUSTOMER,
