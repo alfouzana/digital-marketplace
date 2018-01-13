@@ -25,6 +25,8 @@ function product_files_path()
     return protected_uploads_path(app('product_files_dir'));
 }
 
+// TODO: Move factory helpers to database/factories/helpers.php
+
 /**
  * @param string $directory
  * @return bool
