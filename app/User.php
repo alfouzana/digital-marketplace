@@ -5,10 +5,21 @@ namespace App;
 use App\Enums\UserTypes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SingleTableInheritanceTrait;
+
+    protected $table = 'users';
+
+    protected static $singleTableTypeField = 'type';
+
+    protected static $singleTableSubclasses = [
+        Admin::class,
+        Vendor::class,
+        Customer::class,
+    ];
 
     /**
      * The attributes that are mass assignable.
