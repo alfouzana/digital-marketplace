@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->type == UserTypes::VENDOR;
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

@@ -27,4 +27,14 @@ Route::get('/product/{slug}/{product}', [
     'uses' => 'ProductsController@show'
 ]);
 
+Route::group([
+    'prefix' => '/vendor',
+    'namespace' => 'Vendor',
+    'middleware' => ['auth', 'onlyVendors'],
+], function () {
+    Route::get('/products', [
+        'uses' => 'ProductsController@index'
+    ]);
+});
+
 Auth::routes();
