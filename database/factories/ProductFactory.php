@@ -38,7 +38,7 @@ $factory->define(App\Product::class, function (Faker $faker) {
         ),
 
         'user_id' => function() {
-            return create_vendor_user()->id;
+            return factory(\App\Vendor::class)->create()->id;
         },
 
         'category_id' => function() {

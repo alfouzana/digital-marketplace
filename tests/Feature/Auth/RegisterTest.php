@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\UserTypes;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -22,41 +24,61 @@ class RegisterTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_register()
+    public function a_user_can_register_as_a_vendor()
     {
-        $user = factory(User::class)->make();
+        $registerData = $this->registerData(UserTypes::VENDOR);
 
-        $this->register($user);
+        $response = $this->post('/register', $registerData);
 
-        $this->assertDatabaseHas('users', [
-            'name' => $user['name'],
-            'email' => $user['email'],
-            'type' => $user['type']
-        ]);
+        $this->assertDatabaseHas('users', array_except(
+            $registerData, ['password', 'password_confirmation']
+        ));
+
+        $response->assertRedirect('/vendor');
     }
 
     /**
      * @test
      */
-    public function a_user_should_be_redirected_to_their_home_after_registering()
+    public function a_user_can_register_as_a_customer()
     {
-        $user = factory(User::class)->make();
+        $registerData = $this->registerData(UserTypes::CUSTOMER);
 
-        $this->register($user)->assertRedirect($user->homeUrl());
+        $response = $this->post('/register', $registerData);
+
+        $this->assertDatabaseHas('users', array_except(
+            $registerData, ['password', 'password_confirmation']
+        ));
+
+        $response->assertRedirect('/customer');
     }
-    
+
+    /**
+     * @test
+     */
+    public function a_user_may_not_register_as_an_admin()
+    {
+        $registerData = $this->registerData(UserTypes::ADMIN);
+
+        $this->expectException(ValidationException::class);
+
+        $this->post('/register', $registerData);
+    }
+
     /**
      * @test
      */
     public function a_user_password_should_be_hashed_when_they_register()
     {
-        $user = factory(User::class)->make();
+        $registerData = $this->registerData();
 
-        $this->register($user);
+        $this->post('/register', $registerData);
 
         $registeredUser = User::find(1);
 
-        $this->assertTrue(Hash::check('secret', $registeredUser->password));
+        $this->assertTrue(Hash::check(
+            $registerData['password'], $registeredUser->password
+        ));
     }
     
     /**
@@ -69,7 +91,7 @@ class RegisterTest extends TestCase
         $this->get('/register')
             ->assertRedirect($user->homeUrl());
 
-        $this->register(factory(User::class)->create())
+        $this->post('/register', $this->registerData())
             ->assertRedirect($user->homeUrl());
     }
 
@@ -82,5 +104,22 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
             'type' => $user['type'],
         ]);
+    }
+
+    protected function registerData($userType = null)
+    {
+        $userType = is_null($userType) ?
+            array_random([UserTypes::VENDOR, UserTypes::CUSTOMER]) :
+            $userType;
+
+        $userAttributes = factory(User::class)->raw();
+
+        return [
+            'name' => $userAttributes['name'],
+            'email' => $userAttributes['email'],
+            'password' => 'secret',
+            'password_confirmation' => 'secret',
+            'type' => $userType,
+        ];
     }
 }

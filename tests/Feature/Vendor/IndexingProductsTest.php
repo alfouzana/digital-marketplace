@@ -20,8 +20,8 @@ class IndexingProductsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $adminUser = create_admin_user();
-        $customerUser = create_customer_user();
+        $adminUser = factory(Admin::class)->create();
+        $customerUser = factory(Customer::class)->create();
 
         $path = '/vendor/products';
 
@@ -45,7 +45,7 @@ class IndexingProductsTest extends TestCase
      */
     public function a_vendor_can_view_their_products_with_any_approval_status()
     {
-        $vendorUser = create_vendor_user();
+        $vendorUser = factory(Vendor::class)->create();
 
         $approvedProduct = create_approved_product([
             'user_id' => $vendorUser->id
@@ -72,7 +72,7 @@ class IndexingProductsTest extends TestCase
      */
     public function a_vendor_may_not_view_products_not_belong_to_them()
     {
-        $vendorUser = create_vendor_user();
+        $vendorUser = factory(Vendor::class)->create();
 
         $notBelongingProduct = factory(Product::class)->create();
 
@@ -87,7 +87,7 @@ class IndexingProductsTest extends TestCase
      */
     public function a_vendor_can_request_to_view_their_archived_products()
     {
-        $vendorUser = create_vendor_user();
+        $vendorUser = factory(Vendor::class)->create();
 
         with($archivedProduct = factory(Product::class)->create([
             'user_id' => $vendorUser->id,
