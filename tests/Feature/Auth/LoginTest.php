@@ -25,7 +25,7 @@ class LoginTest extends TestCase
      */
     public function a_user_can_login()
     {
-        $user = factory(User::class)->create();
+        $user = factory(random_user_class())->create();
 
         $this->post('/login', [
             'email' => $user['email'],
@@ -40,7 +40,7 @@ class LoginTest extends TestCase
      */
     public function a_user_should_be_redirected_to_their_home_after_login()
     {
-        $user = factory(User::class)->create();
+        $user = factory(random_user_class())->create();
 
         $this->post('/login', [
             'email' => $user['email'],

@@ -112,16 +112,14 @@ class RegisterTest extends TestCase
             array_random([UserTypes::VENDOR, UserTypes::CUSTOMER]) :
             $userType;
 
-        $userAttributes = factory(User::class)->raw([
-            'type' => $userType,
-        ]);
+        $userAttributes = factory(User::class)->raw();
 
         return [
             'name' => $userAttributes['name'],
             'email' => $userAttributes['email'],
             'password' => 'secret',
             'password_confirmation' => 'secret',
-            'type' => $userAttributes['type'],
+            'type' => $userType,
         ];
     }
 }

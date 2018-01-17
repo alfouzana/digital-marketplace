@@ -76,23 +76,7 @@ function create_pending_product($overrides = [], $times = 1)
     return $times == 1 ? $products[0] : $products;
 }
 
-function create_admin_user()
+function random_user_class()
 {
-    return factory(\App\User::class)->create([
-       'type' => \App\Enums\UserTypes::ADMIN
-    ]);
-}
-
-function create_vendor_user()
-{
-    return factory(\App\User::class)->create([
-        'type' => \App\Enums\UserTypes::VENDOR,
-    ]);
-}
-
-function create_customer_user()
-{
-    return factory(\App\User::class)->create([
-        'type' => \App\Enums\UserTypes::CUSTOMER,
-    ]);
+    return array_random(\App\User::getSingleTableTypeMap());
 }

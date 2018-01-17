@@ -13,18 +13,25 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(\App\User::class, function (Faker $faker) {
     static $password;
 
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
-        'type' => array_random([
-            \App\Enums\UserTypes::ADMIN,
-            \App\Enums\UserTypes::VENDOR,
-            \App\Enums\UserTypes::CUSTOMER
-        ]),
         'remember_token' => str_random(10),
     ];
+});
+
+$factory->define(\App\Admin::class, function (Faker $faker) {
+    return factory(\App\User::class)->raw();
+});
+
+$factory->define(\App\Vendor::class, function (Faker $faker) {
+    return factory(\App\User::class)->raw();
+});
+
+$factory->define(\App\Customer::class, function (Faker $faker) {
+    return factory(\App\User::class)->raw();
 });
