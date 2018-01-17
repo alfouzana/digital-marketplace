@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Enums\UserTypes;
+use App\Vendor;
 use Closure;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -19,7 +20,7 @@ class AllowOnlyVendors
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user()->type != UserTypes::VENDOR) {
+        if (! $request->user() instanceof Vendor) {
             $this->deny();
         }
 
