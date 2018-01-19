@@ -1,32 +1,32 @@
 <?php
 
-function approval_status($approvable)
+function approval_lang($status)
 {
-    if ($approvable->isPending()) {
+    if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::PENDING) {
         return __('Pending');
     }
 
-    if ($approvable->isApproved()) {
+    if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::APPROVED) {
         return __('Approved');
     }
 
-    if ($approvable->isRejected()) {
+    if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::REJECTED) {
         return __('Rejected');
     }
 }
 
 
-function approval_context($approvable)
+function approval_context($status)
 {
-    if ($approvable->isPending()) {
+    if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::PENDING) {
         return 'warning';
     }
 
-    if ($approvable->isApproved()) {
+    if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::APPROVED) {
         return 'success';
     }
 
-    if ($approvable->isRejected()) {
+    if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::REJECTED) {
         return 'danger';
     }
 }
