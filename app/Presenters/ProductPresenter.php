@@ -61,4 +61,9 @@ class ProductPresenter extends BasePresenter
     {
         return approval_context($this->wrappedObject->approval_status);
     }
+
+    public function showable()
+    {
+        return $this->wrappedObject->isApproved() && ! $this->wrappedObject->trashed();
+    }
 }
