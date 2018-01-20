@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->cleanResourceDirectories();
 
         create_approved_product([], 20);
+
+        $this->createDemoVendor();
     }
 
     protected function cleanDatabase()
@@ -32,5 +34,26 @@ class DatabaseSeeder extends Seeder
         clean_resource_directory(product_covers_path());
         clean_resource_directory(product_samples_path());
         clean_resource_directory(product_files_path());
+    }
+
+    protected function createDemoVendor()
+    {
+        $vendor = factory(\App\Vendor::class)->create([
+            'name' => 'Demo Vendor',
+            'email' => 'vendor@example.com',
+            'password' => bcrypt('123')
+        ]);
+
+        create_pending_product([
+            'user_id' => $vendor->id,
+        ]);
+
+        create_approved_product([
+            'user_id' => $vendor->id,
+        ]);
+
+        create_rejected_product([
+            'user_id'  =>$vendor->id,
+        ]);
     }
 }
