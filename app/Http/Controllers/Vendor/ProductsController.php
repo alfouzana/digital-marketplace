@@ -22,6 +22,6 @@ class ProductsController extends Controller
 
         $products = $query->paginate();
 
-        return $products;
+        return view('vendor.products.index', compact('products'));
     }
 }
