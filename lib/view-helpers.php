@@ -31,11 +31,17 @@ function approval_context($status)
     }
 }
 
-function get_secondary_navigation()
+function get_secondary_navigation($prefix)
 {
-    return with($categories = App\Category::all())->pluck('name')->combine(
-        $categories->map(function(App\Category $category) {
-            return $category->url();
-        })
-    );
+    switch ($prefix)
+    {
+        case 'vendor':
+            return ['My Products' => url('/vendor/products')];
+        default:
+            return with($categories = App\Category::all())->pluck('name')->combine(
+                $categories->map(function(App\Category $category) {
+                    return $category->url();
+                })
+            );
+    }
 }

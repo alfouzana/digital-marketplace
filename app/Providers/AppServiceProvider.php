@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,10 @@ class AppServiceProvider extends ServiceProvider
         require_once base_path('lib'.DIRECTORY_SEPARATOR.'helpers.php');
         require_once base_path('lib'.DIRECTORY_SEPARATOR.'view-helpers.php');
 
-        View::share('secondary_navigation', get_secondary_navigation());
+        View::share(
+            'secondary_navigation',
+            get_secondary_navigation(str_before(Request::path(), '/'))
+        );
     }
 
     /**
