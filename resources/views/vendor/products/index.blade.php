@@ -1,8 +1,23 @@
 @extends('layouts.app')
 
-@section('title', __('My Products'))
+@section('title', !Request::has('archived') ? __('My Products') : __('Archived Products'))
 
 @section('content')
+    <div>
+        @if(!Request::has('archived'))
+            <a href="{{ url('/vendor/products?archived=1') }}"
+               class="btn btn-outline-secondary float-right mb-3"
+               title="@lang('Archived Products')">
+                <i class="fa fa-archive"></i>
+            </a>
+        @else
+            <a href="{{ url('/vendor/products') }}"
+               class="btn btn-outline-primary float-right mb-3"
+               title="@lang('Current Products')">
+                <i class="fa fa-arrow-left"></i>
+            </a>
+        @endif
+    </div>
     @if($products->isEmpty())
         <div class="alert alert-info" role="alert">
             @lang('You have not added any products yet.')
@@ -47,16 +62,25 @@
                             <a href="#" title="@lang('Edit')" class="btn btn-sm btn-light">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a href="#" title="@lang('Archive')" class="btn btn-sm btn-light"
-                               role="button">
-                                <i class="fa fa-archive"></i>
-                            </a>
+                            @if(!$product->trashed())
+                                <a href="#" class="btn btn-sm btn-light"
+                                   title="@lang('Archive')"
+                                   role="button">
+                                    <i class="fa fa-archive"></i>
+                                </a>
+                            @else
+                                <a href="#" class="btn btn-sm btn-light"
+                                   title="@lang('Restore')"
+                                   role="button">
+                                    <i class="fa fa-recycle"></i>
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
-        {{ $products->links('pagination::bootstrap-4') }}
+        {{ $products->appends(Request::only(['archived']))->links('pagination::bootstrap-4') }}
     @endif
 @endsection
