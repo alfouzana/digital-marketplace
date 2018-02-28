@@ -1130,22 +1130,22 @@
         },
         {
             "name": "mtvs/eloquent-approval",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mtvs/eloquent-approval.git",
-                "reference": "bc8d6c21e2762d1939f250e82e4cfae5ca342604"
+                "reference": "4ca1bed0aa5e77fc8e61f65564615dad9b7f000a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mtvs/eloquent-approval/zipball/bc8d6c21e2762d1939f250e82e4cfae5ca342604",
-                "reference": "bc8d6c21e2762d1939f250e82e4cfae5ca342604",
+                "url": "https://api.github.com/repos/mtvs/eloquent-approval/zipball/4ca1bed0aa5e77fc8e61f65564615dad9b7f000a",
+                "reference": "4ca1bed0aa5e77fc8e61f65564615dad9b7f000a",
                 "shasum": ""
             },
             "require": {
                 "illuminate/database": "~5.5.0",
                 "illuminate/support": "~5.5.0",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.0"
             },
             "require-dev": {
                 "orchestra/database": "~3.5",
@@ -1181,7 +1181,7 @@
                 "eloquent",
                 "laravel"
             ],
-            "time": "2017-12-10T14:44:47+00:00"
+            "time": "2017-12-16T13:00:26+00:00"
         },
         {
             "name": "nanigans/single-table-inheritance",
