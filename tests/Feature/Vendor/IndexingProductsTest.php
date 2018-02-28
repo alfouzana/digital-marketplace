@@ -20,23 +20,15 @@ class IndexingProductsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $adminUser = factory(Admin::class)->create();
-        $customerUser = factory(Customer::class)->create();
-
-        $path = '/vendor/products';
-
-        // unauthenticated
-        $this->get($path)
+        // unauthenticated attempt
+        $this->get('/vendor/products')
             ->assertRedirect('/login');
 
-        // Admin user
-        $this->signIn($adminUser);
-        $this->get($path)
-            ->assertStatus(403);
-
-        // Customer user
-        $this->signIn($customerUser);
-        $this->get($path)
+        // non vendor attempt
+        $this->actingAs(
+            $this->createNonVendorUser()
+        );
+        $this->get('/vendor/products')
             ->assertStatus(403);
     }
 
