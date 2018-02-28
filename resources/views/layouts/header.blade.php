@@ -55,7 +55,7 @@
 
 <div class="container">
     <ul class="nav nav-pills">
-        @foreach($secondary_navigation as $name => $url)
+        @foreach(get_secondary_navigation(str_before(Request::path(), '/')) as $name => $url)
             <li class="nav-item">
                 <a href="{{ $url }}"
                    class="nav-link{{Request::url() == $url ? ' active' : '' }}"
