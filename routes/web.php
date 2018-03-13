@@ -32,9 +32,21 @@ Route::group([
     'namespace' => 'Vendor',
     'middleware' => ['auth', 'onlyVendors'],
 ], function () {
-    Route::get('/products', [
-        'uses' => 'ProductsController@index'
-    ]);
+    Route::group([
+        'prefix' => '/products',
+    ], function () {
+        Route::get('/', [
+            'uses' => 'ProductsController@index'
+        ]);
+
+        Route::get('/create', [
+            'uses' => 'ProductsController@create'
+        ]);
+
+        Route::post('/', [
+            'uses' => 'ProductsController@store'
+        ]);
+    });
 });
 
 Auth::routes();
