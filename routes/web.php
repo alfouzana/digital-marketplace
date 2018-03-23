@@ -35,6 +35,14 @@ Route::group([
     Route::get('/products', [
         'uses' => 'ProductsController@index'
     ]);
+
+    Route::get('/new-product/details', [
+        'uses' => 'NewProductController@showDetailsStep'
+    ]);
+
+    Route::post('/new-product/details', [
+        'uses' => 'NewProductController@processDetailsStep'
+    ]);
 });
 
 Auth::routes();
