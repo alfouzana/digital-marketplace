@@ -36,13 +36,25 @@ Route::group([
         'uses' => 'ProductsController@index'
     ]);
 
-    Route::get('/new-product/details', [
-        'uses' => 'NewProductController@showDetailsStep'
-    ]);
+    Route::group([
+        'prefix' => '/new-product'
+    ], function () {
+        Route::get('/details', [
+            'uses' => 'NewProductController@showDetailsStep'
+        ]);
 
-    Route::post('/new-product/details', [
-        'uses' => 'NewProductController@processDetailsStep'
-    ]);
+        Route::post('/details', [
+            'uses' => 'NewProductController@processDetailsStep'
+        ]);
+
+        Route::get('/cover', [
+            'uses' => 'NewProductController@showCoverStep'
+        ]);
+
+        Route::post('/cover', [
+            'uses' => 'NewProductController@processCoverStep'
+        ]);
+    });
 });
 
 Auth::routes();

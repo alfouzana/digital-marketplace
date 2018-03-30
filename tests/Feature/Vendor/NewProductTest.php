@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Vendor;
 
+use App\File;
 use App\Product;
 use App\Vendor;
+use Illuminate\Http\UploadedFile;
 use Mtvs\EloquentApproval\ApprovalStatuses;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,21 +17,25 @@ class NewProductTest extends TestCase
     /**
      * @test
      */
-    public function a_non_authenticated_user_may_not_enter_new_product_details()
+    public function a_non_authenticated_user_may_not_access_new_product_steps()
     {
         $this->withExceptionHandling();
 
         $this->get('/vendor/new-product/details')
             ->assertRedirect('/login');
-
         $this->post('/vendor/new-product/details')
+            ->assertRedirect('/login');
+
+        $this->get('/vendor/new-product/cover')
+            ->assertRedirect('/login');
+        $this->post('/vendor/new-product/cover')
             ->assertRedirect('/login');
     }
 
     /**
      * @test
      */
-    public function a_non_vendor_user_may_not_enter_new_product_details()
+    public function a_non_vendor_user_may_not_access_new_product_steps()
     {
         $this->withExceptionHandling();
 
@@ -39,8 +45,12 @@ class NewProductTest extends TestCase
 
         $this->get('/vendor/new-product/details')
             ->assertStatus(403);
-
         $this->post('/vendor/new-product/details')
+            ->assertStatus(403);
+
+        $this->get('/vendor/new-product/cover')
+            ->assertStatus(403);
+        $this->post('/vendor/new-product/cover')
             ->assertStatus(403);
     }
 
@@ -118,5 +128,96 @@ class NewProductTest extends TestCase
         ])->assertSessionHasErrors([
             'price'
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function a_vendor_user_should_have_passed_the_new_product_details_before_the_cover()
+    {
+        $this->actingAs(
+            factory(Vendor::class)->create()
+        );
+
+        $this->get('/vendor/new-product/cover')
+            ->assertRedirect('/vendor/new-product');
+        $this->post('/vendor/new-product/cover')
+            ->assertRedirect('/vendor/new-product');
+    }
+
+    /**
+     * @test
+     */
+    public function a_vendor_user_can_upload_the_new_product_cover()
+    {
+        $this->actingAs(
+            factory(Vendor::class)->create()
+        );
+
+        $details = factory(Product::class, 'details')->raw();
+        $this->post('/vendor/new-product/details', $details);
+
+        $this->post('/vendor/new-product/cover', [
+            'cover' => UploadedFile::fake()->image('cover.jpg', 640, 480)
+        ])->assertSessionHas('new_product.cover_step.cover')
+            ->assertRedirect('/vendor/new-product/sample');
+
+        $this->assertNotNull($cover = (new File)->newQueryWithoutScopes()->where([
+            'assoc' => 'cover',
+            'product_id' => null
+        ])->first());
+
+        $this->assertFileExists(public_path($cover->path));
+    }
+
+    /**
+     * @test
+     */
+    public function a_vendor_user_should_enter_valid_data_into_the_new_product_cover()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs(
+            factory(Vendor::class)->create()
+        );
+
+        $details = factory(Product::class, 'details')->raw();
+        $this->post('/vendor/new-product/details', $details);
+
+        // missing cover
+        $this->post('/vendor/new-product/cover', [
+
+        ], [
+            'referer' => url('/vendor/new-product/cover')
+        ])->assertSessionHasErrors([
+                'cover'
+        ])->assertRedirect('/vendor/new-product/cover');
+
+        // not a file
+        $this->post('/vendor/new-product/cover', [
+            'cover' => 'not a file'
+        ], [
+            'referer' => url('/vendor/new-product/cover')
+        ])->assertSessionHasErrors([
+            'cover'
+        ])->assertRedirect('/vendor/new-product/cover');
+
+        // not an image
+        $this->post('/vendor/new-product/cover', [
+            'cover' => UploadedFile::fake()->create('file.txt')
+        ], [
+            'referer' => url('/vendor/new-product/cover')
+        ])->assertSessionHasErrors([
+            'cover'
+        ])->assertRedirect('/vendor/new-product/cover');
+
+        // invalid dimensions
+        $this->post('/vendor/new-product/cover', [
+            'cover' => UploadedFile::fake()->image('cover.jpg')
+        ], [
+            'referer' => url('/vendor/new-product/cover')
+        ])->assertSessionHasErrors([
+            'cover'
+        ])->assertRedirect('/vendor/new-product/cover');
     }
 }
