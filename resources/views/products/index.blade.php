@@ -6,7 +6,7 @@
     <div class="row">
         @foreach($products as $product)
             <div class="col-md-6 col-xl-4">
-                @include('products._product-preview')
+                @include('products._preview')
             </div>
         @endforeach
     </div>
