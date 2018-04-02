@@ -15,6 +15,9 @@ class Product extends Model implements HasPresenter
     use Sluggable, Approvable, SoftDeletes;
 
     protected $with = [
+        'cover',
+        'sample',
+//        'file',
         'category',
         'vendor',
     ];
@@ -43,6 +46,24 @@ class Product extends Model implements HasPresenter
             ]
         ];
     }
+
+    public function cover()
+    {
+        return $this->hasOne(File::class)
+            ->where('assoc', 'cover');
+    }
+
+    public function sample()
+    {
+        return $this->hasOne(File::class)
+            ->where('assoc', 'sample');
+    }
+
+//    public function file()
+//    {
+//        return $this->hasOne(File::class)
+//            ->where('assoc', 'main');
+//    }
 
     public function category()
     {
