@@ -20,15 +20,9 @@ class CreateProductsTable extends Migration
 
             $table->string('slug');
 
-            $table->string('cover_path')->nullable();
-
             $table->text('body');
 
             $table->decimal('price', 10, 2);
-
-            $table->string('sample_path');
-
-            $table->string('file_path');
 
             $table->unsignedInteger('user_id')->index();
 
