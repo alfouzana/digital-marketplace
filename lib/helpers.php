@@ -76,6 +76,21 @@ function create_pending_product($overrides = [], $times = 1)
     return $times == 1 ? $products[0] : $products;
 }
 
+function create_product_files($product_id)
+{
+    factory(App\File::class)->states('cover')->create([
+        'product_id' => $product_id
+    ]);
+
+    factory(App\File::class)->states('sample')->create([
+        'product_id' => $product_id
+    ]);
+
+//    factory(App\File::class)->states('main')->create([
+//        'product_id' => $product_id
+//    ]);
+}
+
 function random_user_class()
 {
     return array_random(\App\User::getSingleTableTypeMap());

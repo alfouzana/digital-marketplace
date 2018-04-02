@@ -15,6 +15,7 @@ class ShowingProductsTest extends TestCase
     function a_user_can_view_a_product()
     {
         $product = create_approved_product();
+        create_product_files($product->id);
 
         $this->get($product->url())
             ->assertSee($product->title);

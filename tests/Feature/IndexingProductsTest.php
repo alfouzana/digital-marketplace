@@ -17,6 +17,7 @@ class IndexingProductsTest extends TestCase
     function a_user_can_view_products()
     {
         $product = create_approved_product();
+        create_product_files($product->id);
 
         $this->get('products')
             ->assertSee($product->title);
@@ -57,8 +58,10 @@ class IndexingProductsTest extends TestCase
         $productFromCategory = create_approved_product([
             'category_id' => $category->id
         ]);
+        create_product_files($productFromCategory->id);
 
         $productNotFromCategory = create_approved_product();
+        create_product_files($productNotFromCategory->id);
 
         $this->get($category->url())
             ->assertSee($productFromCategory->title)
