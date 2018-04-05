@@ -14,6 +14,9 @@ class HomePageTest extends TestCase
      */
     public function a_user_can_visit_the_home_page()
     {
+        $product = create_approved_product();
+        create_product_files($product->id);
+
         $this->get('/')
             ->assertStatus(200);
     }
