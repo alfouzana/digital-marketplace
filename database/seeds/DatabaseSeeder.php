@@ -17,7 +17,11 @@ class DatabaseSeeder extends Seeder
 
         $this->cleanResourceDirectories();
 
-        create_approved_product([], 20);
+        $products = create_approved_product([], 20);
+
+        $products->each(function ($product) {
+           create_product_files($product->id);
+        });
 
         $this->createDemoVendor();
     }
@@ -25,6 +29,7 @@ class DatabaseSeeder extends Seeder
     protected function cleanDatabase()
     {
         \App\Product::truncate();
+        \App\File::truncate();
         \App\User::truncate();
         \App\Category::truncate();
     }
@@ -44,16 +49,20 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123')
         ]);
 
-        create_pending_product([
+        $vendorProducts[] = create_pending_product([
             'user_id' => $vendor->id,
         ]);
 
-        create_approved_product([
+        $vendorProducts[] = create_approved_product([
             'user_id' => $vendor->id,
         ]);
 
-        create_rejected_product([
+        $vendorProducts[] = create_rejected_product([
             'user_id'  =>$vendor->id,
         ]);
+
+        collect($vendorProducts)->each(function ($product) {
+            create_product_files($product->id);
+        });
     }
 }
