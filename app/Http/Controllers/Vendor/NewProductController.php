@@ -54,24 +54,14 @@ class NewProductController extends Controller
             'cover' => 'required|file|mimes:jpeg|dimensions:min_width=640,min_height=480,ratio=4/3'
         ]);
 
-        $uploadedCover = $request->file('cover');
+        $path = $request->file('cover')->store('product_covers', 'public');
 
-        $coverFile = $uploadedCover->move(
-            // todo: consider moving uploads dir into storage dir
-            // todo: consider uuid
-            public_uploads_path('product_covers'),
-            uniqid().'.'.$uploadedCover->extension()
-        );
-
-        $coverModel = File::create([
-            'path' => Str::after(
-                $coverFile->getRealPath(),
-                public_path().DIRECTORY_SEPARATOR
-            ),
+        $cover = File::create([
+            'path' => $path,
             'assoc' => 'cover',
         ]);
 
-        session()->put('new_product.cover_step.cover.id', $coverModel->id);
+        session()->put('new_product.cover_step.cover.id', $cover->id);
 
         return redirect('/vendor/new-product/sample');
     }

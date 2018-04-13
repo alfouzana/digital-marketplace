@@ -13,14 +13,14 @@ $factory->define(\App\File::class, function (Faker $faker) {
 $factory->state(\App\File::class, 'cover', function (Faker $faker) {
     $path = app()->environment('testing')
         ? ''
-        : str_after(
+        : (new \Illuminate\Http\UploadedFile(
             $faker->image(
-                product_covers_path(),
+                null,
                 640, 480,
                 'abstract'
             ),
-            public_path().DIRECTORY_SEPARATOR
-        );
+            'product-cover'
+        ))->store('product_covers', 'public');
 
     return [
         'assoc' => 'cover',
@@ -32,11 +32,8 @@ $factory->state(\App\File::class, 'cover', function (Faker $faker) {
 $factory->state(\App\File::class, 'sample', function (Faker $faker) {
     $path = app()->environment('testing')
         ? ''
-        : str_after(
-            \Illuminate\Http\UploadedFile::fake()->create('product-sample')
-            ->move(product_samples_path(), uniqid())->getRealPath(),
-            public_path().DIRECTORY_SEPARATOR
-        );
+        : \Illuminate\Http\UploadedFile::fake()->create('product-sample')
+            ->store('product_samples', 'public');
 
     return [
         'assoc' => 'sample',
