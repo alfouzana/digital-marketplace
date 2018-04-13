@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 
         $this->cleanDatabase();
 
-        $this->cleanResourceDirectories();
+        $this->cleanStorage();
 
         $products = create_approved_product([], 20);
 
@@ -34,11 +34,13 @@ class DatabaseSeeder extends Seeder
         \App\Category::truncate();
     }
 
-    protected function cleanResourceDirectories()
+    protected function cleanStorage()
     {
-        clean_resource_directory(product_covers_path());
-        clean_resource_directory(product_samples_path());
-        clean_resource_directory(product_files_path());
+        \Illuminate\Support\Facades\Storage::disk('public')
+            ->deleteDirectory('product_covers');
+
+        \Illuminate\Support\Facades\Storage::disk('public')
+            ->deleteDirectory('product_samples');
     }
 
     protected function createDemoVendor()
