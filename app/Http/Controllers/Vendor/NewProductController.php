@@ -61,7 +61,7 @@ class NewProductController extends Controller
             'assoc' => 'cover',
         ]);
 
-        session()->put('new_product.cover_step.cover.id', $cover->id);
+        session()->put('new_product.cover_step.cover_id', $cover->id);
 
         return redirect('/vendor/new-product/sample');
     }

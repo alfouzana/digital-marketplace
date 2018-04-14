@@ -162,18 +162,18 @@ class NewProductTest extends TestCase
 
         $this->post('/vendor/new-product/cover', [
             'cover' => UploadedFile::fake()->image('cover.jpg', 640, 480)
-        ])->assertSessionHas('new_product.cover_step.cover')
+        ])->assertSessionHas('new_product.cover_step.cover_id')
             ->assertRedirect('/vendor/new-product/sample');
 
+        $cover_id = session('new_product.cover_step.cover_id');
+
         $this->assertDatabaseHas('files', [
-            'id' => session('new_product.cover_step.cover.id'),
+            'id' => $cover_id,
             'assoc' => 'cover',
             'product_id' => null
         ]);
 
-        $cover = File::find(
-            session('new_product.cover_step.cover.id')
-        );
+        $cover = File::find($cover_id);
 
         Storage::disk('public')->assertExists($cover->path);
     }
