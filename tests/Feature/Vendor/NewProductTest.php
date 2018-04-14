@@ -151,6 +151,8 @@ class NewProductTest extends TestCase
      */
     public function a_vendor_user_can_upload_the_new_product_cover()
     {
+        Storage::fake('public');
+
         $this->actingAs(
             factory(Vendor::class)->create()
         );
