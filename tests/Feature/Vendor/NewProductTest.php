@@ -163,10 +163,15 @@ class NewProductTest extends TestCase
         ])->assertSessionHas('new_product.cover_step.cover')
             ->assertRedirect('/vendor/new-product/sample');
 
-        $this->assertNotNull($cover = (new File)->newQueryWithoutScopes()->where([
+        $this->assertDatabaseHas('files', [
+            'id' => session('new_product.cover_step.cover.id'),
             'assoc' => 'cover',
             'product_id' => null
-        ])->first());
+        ]);
+
+        $cover = File::find(
+            session('new_product.cover_step.cover.id')
+        );
 
         Storage::disk('public')->assertExists($cover->path);
     }
