@@ -6,6 +6,7 @@ use App\File;
 use App\Product;
 use App\Vendor;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Mtvs\EloquentApproval\ApprovalStatuses;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -167,7 +168,7 @@ class NewProductTest extends TestCase
             'product_id' => null
         ])->first());
 
-        $this->assertFileExists(public_path($cover->path));
+        Storage::disk('public')->assertExists($cover->path);
     }
 
     /**
