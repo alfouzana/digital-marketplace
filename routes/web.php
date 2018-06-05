@@ -54,6 +54,12 @@ Route::group([
         Route::post('/cover', [
             'uses' => 'NewProductController@processCoverStep'
         ]);
+
+        Route::get('/sample', [
+            'uses' => 'NewProductController@showSampleStep'
+        ]);
+
+        Route::post('/sample', 'NewProductController@processSampleStep');
     });
 });
 

@@ -65,4 +65,27 @@ class NewProductController extends Controller
 
         return redirect('/vendor/new-product/sample');
     }
+
+    public function showSampleStep()
+    {
+        return view('vendor.new-product.sample-step');
+    }
+
+    public function processSampleStep(Request $request)
+    {
+        $this->validate($request, [
+            'sample' => 'required|file'
+        ]);
+
+        $path = $request->file('sample')->store('product_samples', 'public');
+
+        $sample = File::create([
+            'assoc' => 'sample',
+            'path' => $path
+        ]);
+
+        session()->put('new_product.sample_step.sample_id', $sample->id);
+
+        return redirect('/vendor/new-product/file');
+    }
 }
