@@ -86,6 +86,6 @@ class NewProductController extends Controller
 
         session()->put('new_product.sample_step.file_id', $file->id);
 
-        return redirect('/vendor/new-product/file');
+        return redirect('/vendor/new-product/product-file');
     }
 }
