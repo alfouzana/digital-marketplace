@@ -17,19 +17,19 @@
 
                     <div class="form-group row">
                         {{-- todo: Rename sample field to file --}}
-                        {{ Form::label('sample', __('File'), [
+                        {{ Form::label('file', __('File'), [
                             'class' => 'col-form-label col-lg-4 text-lg-right'
                         ]) }}
                         <div class="col-lg-6">
-                            {{ Form::file('sample', [
+                            {{ Form::file('file', [
                                 'required',
-                                'class' => 'form-control' . ($errors->has('sample') ? ' is-invalid': '')
+                                'class' => 'form-control' . ($errors->has('file') ? ' is-invalid': '')
                             ]) }}
 
-                            @if($errors->has('sample'))
+                            @if($errors->has('file'))
                                 <div class="invalid-feedback">
                                     <strong>
-                                        {{ $errors->first('sample') }}
+                                        {{ $errors->first('file') }}
                                     </strong>
                                 </div>
                             @endif

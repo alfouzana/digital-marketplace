@@ -30,21 +30,21 @@ class NewProductSampleStepTest extends TestCase
             ->assertSee(__('Sample'));
 
         $this->post('/vendor/new-product/sample', [
-            'sample' => UploadedFile::fake()->create('sample')
+            'file' => UploadedFile::fake()->create('sample')
         ])->assertRedirect('/vendor/new-product/file')
-        ->assertSessionHas('new_product.sample_step.sample_id');
+        ->assertSessionHas('new_product.sample_step.file_id');
 
-        $sampleId = session('new_product.sample_step.sample_id');
+        $fileId = session('new_product.sample_step.file_id');
 
         $this->assertDatabaseHas('files', [
-            'id' => $sampleId,
+            'id' => $fileId,
             'assoc' => 'sample',
             'product_id' => null
         ]);
 
-        $sample = File::find($sampleId);
+        $file = File::find($fileId);
 
-        Storage::disk('public')->assertExists($sample->path);
+        Storage::disk('public')->assertExists($file->path);
     }
 
     /**
@@ -92,12 +92,12 @@ class NewProductSampleStepTest extends TestCase
         );
 
         $this->post('/vendor/new-product/sample', [
-            'sample' => ''
+            'file' => ''
         ], [
             'referer' => url('/vendor/new-product/sample')
         ])->assertRedirect('/vendor/new-product/sample')
         ->assertSessionHasErrors([
-            'sample'
+            'file'
         ]);
     }
 }

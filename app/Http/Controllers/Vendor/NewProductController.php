@@ -74,17 +74,17 @@ class NewProductController extends Controller
     public function processSampleStep(Request $request)
     {
         $this->validate($request, [
-            'sample' => 'required|file'
+            'file' => 'required|file'
         ]);
 
-        $path = $request->file('sample')->store('product_samples', 'public');
+        $path = $request->file('file')->store('product_samples', 'public');
 
-        $sample = File::create([
+        $file = File::create([
             'assoc' => 'sample',
             'path' => $path
         ]);
 
-        session()->put('new_product.sample_step.sample_id', $sample->id);
+        session()->put('new_product.sample_step.file_id', $file->id);
 
         return redirect('/vendor/new-product/file');
     }
