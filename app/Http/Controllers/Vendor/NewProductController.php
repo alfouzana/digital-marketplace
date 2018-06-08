@@ -93,4 +93,22 @@ class NewProductController extends Controller
     {
         return view('vendor.new-product.product-file-step');
     }
+
+    public function processProductFileStep(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|file'
+        ]);
+
+        $path = $request->file('file')->store('product_files', 'local');
+
+        $file = File::create([
+            'assoc' => 'product',
+            'path' => $path
+        ]);
+
+        session()->put('new_product.product_file_step.file_id', $file->id);
+
+        return redirect('/vendor/new-product/confirm');
+    }
 }

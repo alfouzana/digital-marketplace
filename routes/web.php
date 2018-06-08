@@ -62,6 +62,7 @@ Route::group([
         Route::post('/sample', 'NewProductController@processSampleStep');
 
         Route::get('/product-file', 'NewProductController@showProductFileStep');
+        Route::post('/product-file', 'NewProductController@processProductFileStep');
     });
 });
 
