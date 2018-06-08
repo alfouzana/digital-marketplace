@@ -83,7 +83,7 @@ class NewProductSampleStepTest extends TestCase
     /**
      * @test
      */
-    public function a_vendor_user_should_enter_valid_data_for_cover_step()
+    public function a_vendor_user_should_enter_valid_data_for_the_new_product_sample_step()
     {
         $this->withExceptionHandling();
 
