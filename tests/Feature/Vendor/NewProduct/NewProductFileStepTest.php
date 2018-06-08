@@ -4,6 +4,7 @@ namespace Tests\Feature\Vendor\NewProduct;
 
 use App\File;
 use App\Vendor;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -63,5 +64,37 @@ class NewProductFileStepTest extends TestCase
             'referer' => '/vendor/new-product/product-file'
         ])->assertSessionHasErrors('file')
             ->assertRedirect('/vendor/new-product/product-file');
+    }
+
+    /**
+     * @test
+     */
+    public function a_non_authenticated_user_may_not_upload_the_new_product_file()
+    {
+        $this->withExceptionHandling();
+
+        $this->get('/vendor/new-product/product-file')
+            ->assertRedirect('/login');
+
+        $this->post('/vendor/new-product/product-file')
+            ->assertRedirect('/login');
+    }
+
+    /**
+     * @test
+     */
+    public function a_non_vendor_user_may_not_upload_the_new_product_file()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs(
+            $this->createNonVendorUser()
+        );
+
+        $this->get('/vendor/new-product/product-file')
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->post('/vendor/new-product/product-file')
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }
