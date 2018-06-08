@@ -88,4 +88,9 @@ class NewProductController extends Controller
 
         return redirect('/vendor/new-product/product-file');
     }
+
+    public function showProductFileStep()
+    {
+        return view('vendor.new-product.product-file-step');
+    }
 }
