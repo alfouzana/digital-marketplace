@@ -45,14 +45,17 @@ class NewProductController extends Controller
 
     public function processCoverStep(Request $request)
     {
+        // todo: If should be done should be consistent in other methods too
         if (! session()->has('new_product.details_step'))
         {
             return redirect('/vendor/new-product');
         }
 
         $this->validate($request, [
-            'cover' => 'required|file|mimes:jpeg|dimensions:min_width=640,min_height=480,ratio=4/3'
+            'cover' => 'required|file|mimes:jpeg|dimensions:min_width=640,ratio=4/3'
         ]);
+
+        // todo: resize every uploaded cover to a fix size
 
         $path = $request->file('cover')->store('product_covers', 'public');
 
@@ -61,7 +64,7 @@ class NewProductController extends Controller
             'assoc' => 'cover',
         ]);
 
-        session()->put('new_product.cover_step.cover_id', $cover->id);
+        session()->put('new_product.cover_step.file_id', $cover->id);
 
         return redirect('/vendor/new-product/sample');
     }
