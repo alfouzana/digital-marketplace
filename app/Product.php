@@ -14,6 +14,8 @@ class Product extends Model implements HasPresenter
 {
     use Sluggable, Approvable, SoftDeletes;
 
+    protected $guarded = [];
+
     protected $with = [
         'cover',
         'sample',

@@ -41,7 +41,15 @@ $factory->state(\App\File::class, 'sample', function (Faker $faker) {
     ];
 });
 
-//$factory->state(\App\File::class, 'main', [
-//        'assoc' => 'main'
-//]);
+$factory->state(\App\File::class, 'product_file', function (Faker $faker) {
+    $path = app()->environment('testing')
+        ? ''
+        : \Illuminate\Http\UploadedFile::fake()->create('product-file')
+            ->store('product_files');
+
+    return [
+        'assoc' => 'product-file',
+        'path' => $path
+    ];
+});
 
