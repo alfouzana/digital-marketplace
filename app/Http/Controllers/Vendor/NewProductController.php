@@ -113,7 +113,7 @@ class NewProductController extends Controller
 
         session()->put('new_product.product_file_step.file_id', $file->id);
 
-        return redirect('/vendor/new-product/confirm');
+        return redirect('/vendor/new-product/confirmation');
     }
 
     public function showConfirmationStep()
