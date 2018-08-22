@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use App\Category;
 use App\File;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Support\Facades\Storage;
 
 class NewProductController extends Controller
 {
@@ -118,7 +120,19 @@ class NewProductController extends Controller
 
     public function showConfirmationStep()
     {
-        return __('New Product').' &raquo; '.__('Confirmation');
+        $product_data['title'] = session('new_product.details_step.title');
+        $product_data['body'] = session('new_product.details_step.body');
+        $product_data['price'] = session('new_product.details_step.price');
+        // todo: consider failing the process if the category not found
+        $product_data['category_name'] = Category::find(session('new_product.details_step.category_id'))->name;
+        // todo: consider failing the process if the files not found
+        $product_data['cover_url'] = Storage::disk('public')
+            ->url(File::find(session('new_product.cover_step.file_id'))->path);
+        $product_data['sample_url'] = Storage::disk('public')
+            ->url(File::find(session('new_product.sample_step.file_id'))->path);
+        return view('vendor.new-product.confirmation-step', compact(
+            'product_data'
+        ));
     }
 
     public function processConfirmationStep()
