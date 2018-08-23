@@ -6,6 +6,7 @@ use App\File;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
 
@@ -123,22 +124,24 @@ class NewProductController extends Controller
 
     public function processConfirmationStep()
     {
-        $product = auth()->user()->products()->create(
-            session('new_product.details_step')
-        );
+        DB::transaction(function () {
+            $product = auth()->user()->products()->create(
+                session('new_product.details_step')
+            );
 
-        // consider failing the process if a file not found
-        $files = File::find([
-            session('new_product.cover_step.file_id'),
-            session('new_product.sample_step.file_id'),
-            session('new_product.product_file_step.file_id'),
-        ]);
-
-        foreach ($files as $file) {
-            $file->update([
-                'product_id' => $product->id
+            // consider failing the process if a file not found
+            $files = File::find([
+                session('new_product.cover_step.file_id'),
+                session('new_product.sample_step.file_id'),
+                session('new_product.product_file_step.file_id'),
             ]);
-        }
+
+            foreach ($files as $file) {
+                $file->update([
+                    'product_id' => $product->id
+                ]);
+            }
+        });
 
         session()->remove('new_product');
 
