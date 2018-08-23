@@ -31,7 +31,7 @@ class NewProductFileStepTest extends TestCase
 
         $this->post('/vendor/new-product/product-file', [
             'file' => UploadedFile::fake()->create('file')
-        ])->assertRedirect('/vendor/new-product/confirm')
+        ])->assertRedirect('/vendor/new-product/confirmation')
             ->assertSessionHas('new_product.product_file_step.file_id');
 
         $file_id = session('new_product.product_file_step.file_id');
