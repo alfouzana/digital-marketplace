@@ -30,7 +30,7 @@ class NewProductSampleStepTest extends TestCase
             ->assertSee(__('Sample'));
 
         $this->post('/vendor/new-product/sample', [
-            'file' => UploadedFile::fake()->create('sample')
+            'file' => UploadedFile::fake()->create('sample', 1000)
         ])->assertRedirect('/vendor/new-product/product-file')
         ->assertSessionHas('new_product.sample_step.file_id');
 
@@ -39,7 +39,9 @@ class NewProductSampleStepTest extends TestCase
         $this->assertDatabaseHas('files', [
             'id' => $fileId,
             'assoc' => 'sample',
-            'product_id' => null
+            'product_id' => null,
+            'original_name' => 'sample',
+            'size' => 1000 * 1024
         ]);
 
         $file = File::find($fileId);

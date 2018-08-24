@@ -59,9 +59,9 @@ class NewProductController extends Controller
 
         // todo: resize every uploaded cover to a fix size
 
-        $path = $request->file('cover')->store('product_covers', 'public');
+        $path = with($file = $request->file('cover'))->store('product_covers', 'public');
 
-        $cover = File::create([
+        $cover = File::createFromUploadedFile($file, [
             'path' => $path,
             'assoc' => 'cover',
         ]);
@@ -82,11 +82,11 @@ class NewProductController extends Controller
             'file' => 'required|file'
         ]);
 
-        $path = $request->file('file')->store('product_samples', 'public');
+        $path = with($file = $request->file('file'))->store('product_samples', 'public');
 
-        $file = File::create([
+        $file = File::createFromUploadedFile($file, [
             'assoc' => 'sample',
-            'path' => $path
+            'path' => $path,
         ]);
 
         session()->put('new_product.sample_step.file_id', $file->id);
@@ -105,11 +105,11 @@ class NewProductController extends Controller
             'file' => 'required|file'
         ]);
 
-        $path = $request->file('file')->store('product_files', 'local');
+        $path = with($file = $request->file('file'))->store('product_files', 'local');
 
-        $file = File::create([
+        $file = File::createFromUploadedFile($file, [
             'assoc' => 'product',
-            'path' => $path
+            'path' => $path,
         ]);
 
         session()->put('new_product.product_file_step.file_id', $file->id);
