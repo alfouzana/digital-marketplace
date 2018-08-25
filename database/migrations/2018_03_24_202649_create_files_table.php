@@ -19,6 +19,8 @@ class CreateFilesTable extends Migration
             $table->unsignedInteger('product_id')->nullable();
             $table->string('assoc');
             $table->string('path');
+            $table->string('original_name');
+            $table->unsignedInteger('size');
         });
     }
 

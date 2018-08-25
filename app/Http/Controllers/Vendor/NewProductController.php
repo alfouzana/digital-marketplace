@@ -7,6 +7,7 @@ use App\File;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Support\Facades\Storage;
@@ -60,9 +61,9 @@ class NewProductController extends Controller
 
         // todo: resize every uploaded cover to a fix size
 
-        $path = $request->file('cover')->store('product_covers', 'public');
+        $path = with($file = $request->file('cover'))->store('product_covers', 'public');
 
-        $cover = File::create([
+        $cover = File::createFromUploadedFile($file, [
             'path' => $path,
             'assoc' => 'cover',
         ]);
@@ -83,11 +84,11 @@ class NewProductController extends Controller
             'file' => 'required|file'
         ]);
 
-        $path = $request->file('file')->store('product_samples', 'public');
+        $path = with($file = $request->file('file'))->store('product_samples', 'public');
 
-        $file = File::create([
+        $file = File::createFromUploadedFile($file, [
             'assoc' => 'sample',
-            'path' => $path
+            'path' => $path,
         ]);
 
         session()->put('new_product.sample_step.file_id', $file->id);
@@ -106,11 +107,11 @@ class NewProductController extends Controller
             'file' => 'required|file'
         ]);
 
-        $path = $request->file('file')->store('product_files', 'local');
+        $path = with($file = $request->file('file'))->store('product_files', 'local');
 
-        $file = File::create([
+        $file = File::createFromUploadedFile($file, [
             'assoc' => 'product',
-            'path' => $path
+            'path' => $path,
         ]);
 
         session()->put('new_product.product_file_step.file_id', $file->id);
@@ -137,22 +138,24 @@ class NewProductController extends Controller
 
     public function processConfirmationStep()
     {
-        $product = auth()->user()->products()->create(
-            session('new_product.details_step')
-        );
+        DB::transaction(function () {
+            $product = auth()->user()->products()->create(
+                session('new_product.details_step')
+            );
 
-        // consider failing the process if a file not found
-        $files = File::find([
-            session('new_product.cover_step.file_id'),
-            session('new_product.sample_step.file_id'),
-            session('new_product.product_file_step.file_id'),
-        ]);
-
-        foreach ($files as $file) {
-            $file->update([
-                'product_id' => $product->id
+            // consider failing the process if a file not found
+            $files = File::find([
+                session('new_product.cover_step.file_id'),
+                session('new_product.sample_step.file_id'),
+                session('new_product.product_file_step.file_id'),
             ]);
-        }
+
+            foreach ($files as $file) {
+                $file->update([
+                    'product_id' => $product->id
+                ]);
+            }
+        });
 
         session()->remove('new_product');
 

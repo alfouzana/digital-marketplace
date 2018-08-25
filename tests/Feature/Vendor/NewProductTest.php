@@ -161,7 +161,7 @@ class NewProductTest extends TestCase
         $this->post('/vendor/new-product/details', $details);
 
         $this->post('/vendor/new-product/cover', [
-            'cover' => UploadedFile::fake()->image('cover.jpg', 640, 480)
+            'cover' => $uploadedFile = UploadedFile::fake()->image('cover.jpg', 640, 480)
         ])->assertSessionHas('new_product.cover_step.file_id')
             ->assertRedirect('/vendor/new-product/sample');
 
@@ -170,7 +170,9 @@ class NewProductTest extends TestCase
         $this->assertDatabaseHas('files', [
             'id' => $cover_id,
             'assoc' => 'cover',
-            'product_id' => null
+            'product_id' => null,
+            'original_name' => 'cover.jpg',
+            'size' => $uploadedFile->getSize()
         ]);
 
         $cover = File::find($cover_id);
