@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Illuminate\Http\UploadedFile;
 
 $factory->define(\App\File::class, function (Faker $faker) {
     return [
@@ -10,49 +11,40 @@ $factory->define(\App\File::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(\App\File::class, 'cover', function (Faker $faker) {
+$stateDependantFileAttributes = function ($assoc, $disk, $dir, Closure $callback) {
     list($path, $original_name, $size) = app()->environment('testing') ?
-        ['', '', 0] : [with($file = new \Illuminate\Http\UploadedFile(
-                $faker->image(
-                    null,
-                    640, 480,
-                    'abstract'
-                ),
-                $faker->uuid
-            ))->store('product_covers', 'public'),
+        ['', '', 0] : [
+            with($file = $callback())->store($dir, $disk),
             $file->getClientOriginalName(),
             $file->getSize()
         ];
 
-    $assoc = 'cover';
-
     return compact('assoc', 'path', 'original_name', 'size');
+};
+
+$factory->state(\App\File::class, 'cover', function (Faker $faker) use ($stateDependantFileAttributes) {
+    return  $stateDependantFileAttributes('cover', 'public', 'product_covers', function () use ($faker) {
+        return new UploadedFile(
+            $faker->image(
+                null,
+                640, 480,
+                'abstract'
+            ),
+            'cover.jpeg'
+        );
+    });
 });
 
 
-$factory->state(\App\File::class, 'sample', function (Faker $faker) {
-    list($path, $original_name, $size) = app()->environment('testing') ?
-        ['', '', 0] : [with($file = \Illuminate\Http\UploadedFile::fake()
-            ->create($faker->uuid, 500))->store('product_samples', 'public'),
-            $file->getClientOriginalName(),
-            $file->getSize()
-        ];
-
-    $assoc = 'sample';
-
-    return compact('assoc', 'path', 'original_name', 'size');
+$factory->state(\App\File::class, 'sample', function (Faker $faker) use ($stateDependantFileAttributes) {
+    return $stateDependantFileAttributes('sample', 'public', 'product_samples', function () use ($faker) {
+        return UploadedFile::fake()->create('sample.bin', 500);
+    });
 });
 
-$factory->state(\App\File::class, 'product_file', function (Faker $faker) {
-    list($path, $original_name, $size) = app()->environment('testing') ?
-        ['', '', 0] : [with($file = \Illuminate\Http\UploadedFile::fake()
-            ->create($faker->uuid, 1000))->store('product_files', 'local'),
-            $file->getClientOriginalName(),
-            $file->getSize()
-        ];
-
-    $assoc = 'product-file';
-
-    return compact('assoc', 'path', 'original_name', 'size');
+$factory->state(\App\File::class, 'product_file', function (Faker $faker) use($stateDependantFileAttributes) {
+    return $stateDependantFileAttributes('product_file', 'local', 'product_files', function () use ($faker) {
+        return UploadedFile::fake()->create('sample.bin', 1000);
+    });
 });
 
