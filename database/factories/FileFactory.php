@@ -19,7 +19,7 @@ $stateDependantFileAttributes = function ($assoc, $disk, $dir, Closure $callback
             $file->getSize()
         ];
 
-    return compact('assoc', 'path', 'original_name', 'size');
+    return compact('assoc', 'disk', 'path', 'original_name', 'size');
 };
 
 $factory->state(\App\File::class, 'cover', function (Faker $faker) use ($stateDependantFileAttributes) {

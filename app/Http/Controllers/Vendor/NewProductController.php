@@ -145,6 +145,7 @@ class NewProductController extends Controller
         $path = $file->store($dirPath, $disk);
 
         return File::createFromUploadedFile($file, [
+            'disk' => $disk,
             'path' => $path,
             'assoc' => $assoc,
         ]);
