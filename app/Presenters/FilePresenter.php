@@ -17,11 +17,4 @@ class FilePresenter extends BasePresenter
     {
         $this->wrappedObject = $resource;
     }
-
-    public function url()
-    {
-        return Storage::disk('public')->url(
-            $this->wrappedObject->path
-        );
-    }
 }
