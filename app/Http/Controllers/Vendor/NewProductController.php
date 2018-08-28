@@ -7,6 +7,7 @@ use App\File;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
@@ -61,12 +62,9 @@ class NewProductController extends Controller
 
         // todo: resize every uploaded cover to a fix size
 
-        $path = with($file = $request->file('cover'))->store('product_covers', 'public');
-
-        $cover = File::createFromUploadedFile($file, [
-            'path' => $path,
-            'assoc' => 'cover',
-        ]);
+        $cover = $this->storeTheUploadedFileAndCreateTheModel(
+            $request->file('cover'), 'public', 'product_covers', 'cover'
+        );
 
         session()->put('new_product.cover_step.file_id', $cover->id);
 
@@ -84,12 +82,9 @@ class NewProductController extends Controller
             'file' => 'required|file'
         ]);
 
-        $path = with($file = $request->file('file'))->store('product_samples', 'public');
-
-        $file = File::createFromUploadedFile($file, [
-            'assoc' => 'sample',
-            'path' => $path,
-        ]);
+        $file = $this->storeTheUploadedFileAndCreateTheModel(
+            $request->file('file'), 'public', 'product_samples', 'sample'
+        );
 
         session()->put('new_product.sample_step.file_id', $file->id);
 
@@ -107,12 +102,9 @@ class NewProductController extends Controller
             'file' => 'required|file'
         ]);
 
-        $path = with($file = $request->file('file'))->store('product_files', 'local');
-
-        $file = File::createFromUploadedFile($file, [
-            'assoc' => 'product',
-            'path' => $path,
-        ]);
+        $file = $this->storeTheUploadedFileAndCreateTheModel(
+            $request->file('file'), 'local', 'product_files', 'product'
+        );
 
         session()->put('new_product.product_file_step.file_id', $file->id);
 
@@ -160,5 +152,16 @@ class NewProductController extends Controller
         session()->remove('new_product');
 
         return redirect('/vendor/products');
+    }
+
+    private function storeTheUploadedFileAndCreateTheModel(UploadedFile $file, $disk, $dirPath, $assoc)
+    {
+        $path = $file->store($dirPath, $disk);
+
+        return File::createFromUploadedFile($file, [
+            'disk' => $disk,
+            'path' => $path,
+            'assoc' => $assoc,
+        ]);
     }
 }

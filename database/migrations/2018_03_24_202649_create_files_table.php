@@ -18,6 +18,7 @@ class CreateFilesTable extends Migration
             $table->timestamps();
             $table->unsignedInteger('product_id')->nullable();
             $table->string('assoc');
+            $table->string('disk');
             $table->string('path');
             $table->string('original_name');
             $table->unsignedInteger('size');
