@@ -37,4 +37,44 @@ class IndexingProductsTest extends TestCase
             $response->assertSee($product->title);
         }
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_user_can_filter_the_index_of_products_for_a_specific_approval_status()
+    {
+        $approvalStatuses = [
+            ApprovalStatuses::PENDING,
+            ApprovalStatuses::APPROVED,
+            ApprovalStatuses::REJECTED,
+        ];
+
+        foreach ($approvalStatuses as $approvalStatus) {
+            factory(Product::class)->create([
+                'approval_status' => $approvalStatus
+            ]);
+        }
+
+        $this->actingAs(
+            factory(Admin::class)->create()
+        );
+
+        foreach ($approvalStatuses as $approvalStatus) {
+            $response = $this->get('admin/products?approval_status='.$approvalStatus);
+
+            $productsWithTheApprovalStatus = Product::anyApprovalStatus()
+                ->where('approval_status', $approvalStatus)->get();
+
+            foreach ($productsWithTheApprovalStatus as $product) {
+                $response->assertSee($product->title);
+            }
+
+            $productsWithoutTheApprovalStatus = Product::anyApprovalStatus()
+                ->where('approval_status', '!=', $approvalStatus)->get();
+
+            foreach ($productsWithoutTheApprovalStatus as $product) {
+                $response->assertDontSee($product->title);
+            }
+        }
+    }
 }
