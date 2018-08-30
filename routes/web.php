@@ -71,4 +71,11 @@ Route::group([
     });
 });
 
+Route::group([
+    'prefix' => 'admin',
+    'namespace' => 'Admin'
+], function () {
+    Route::get('products', 'ProductsController@index');
+});
+
 Auth::routes();
