@@ -116,15 +116,19 @@ class NewProductController extends Controller
         $product_data['title'] = session('new_product.details_step.title');
         $product_data['body'] = session('new_product.details_step.body');
         $product_data['price'] = session('new_product.details_step.price');
-        // todo: consider failing the process if the category not found
-        $product_data['category_name'] = Category::find(session('new_product.details_step.category_id'))->name;
-        // todo: consider failing the process if the files not found
-        $product_data['cover_url'] = Storage::disk('public')
-            ->url(File::find(session('new_product.cover_step.file_id'))->path);
-        $product_data['sample_url'] = Storage::disk('public')
-            ->url(File::find(session('new_product.sample_step.file_id'))->path);
+
+        $category = Category::find(session('new_product.details_step.category_id'));
+
+        $cover = File::find(session('new_product.cover_step.file_id'));
+        $sample = File::find(session('new_product.sample_step.file_id'));
+        $file = File::find(session('new_product.product_file_step.file_id'));
+
         return view('vendor.new-product.confirmation-step', compact(
-            'product_data'
+            'product_data',
+            'category',
+            'cover',
+            'sample',
+            'file'
         ));
     }
 
