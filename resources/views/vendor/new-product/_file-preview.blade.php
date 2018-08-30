@@ -2,5 +2,5 @@
     {{ $slot }}
 </a>
 <span class="small">
-    ({{ $size }} Bytes)
+    ({{ $size }})
 </span>

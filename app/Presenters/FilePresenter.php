@@ -17,4 +17,9 @@ class FilePresenter extends BasePresenter
     {
         $this->wrappedObject = $resource;
     }
+
+    public function size()
+    {
+        return number_format($this->wrappedObject->size/(1024*1024), 2).' MB';
+    }
 }
