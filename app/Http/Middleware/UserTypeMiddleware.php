@@ -7,7 +7,7 @@ use App\Vendor;
 use Closure;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AllowOnlyVendors
+class UserTypeMiddleware
 {
     use HandlesAuthorization;
 
@@ -18,9 +18,9 @@ class AllowOnlyVendors
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $userType)
     {
-        if (! $request->user() instanceof Vendor) {
+        if ($request->user()->type != $userType) {
             $this->deny();
         }
 

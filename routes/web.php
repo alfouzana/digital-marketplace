@@ -30,7 +30,7 @@ Route::get('/product/{slug}/{product}', [
 Route::group([
     'prefix' => '/vendor',
     'namespace' => 'Vendor',
-    'middleware' => ['auth', 'onlyVendors'],
+    'middleware' => ['auth', 'userType:'.\App\Enums\UserTypes::VENDOR],
 ], function () {
     Route::get('/products', [
         'uses' => 'ProductsController@index'

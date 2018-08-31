@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\AllowOnlyVendors;
+use App\Http\Middleware\UserTypeMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -59,6 +59,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        'onlyVendors' => AllowOnlyVendors::class,
+        'userType' => UserTypeMiddleware::class,
     ];
 }
