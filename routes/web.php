@@ -11,6 +11,8 @@
 |
 */
 
+use App\Enums\UserTypes;
+
 Route::get('/', [
     'uses' => 'HomeController@index'
 ]);
@@ -30,7 +32,7 @@ Route::get('/product/{slug}/{product}', [
 Route::group([
     'prefix' => '/vendor',
     'namespace' => 'Vendor',
-    'middleware' => ['auth', 'userType:'.\App\Enums\UserTypes::VENDOR],
+    'middleware' => ['auth', 'userType:'. UserTypes::VENDOR],
 ], function () {
     Route::get('/products', [
         'uses' => 'ProductsController@index'
@@ -73,7 +75,8 @@ Route::group([
 
 Route::group([
     'prefix' => 'admin',
-    'namespace' => 'Admin'
+    'namespace' => 'Admin',
+    'middleware' => ['auth', 'userType:'.UserTypes::ADMIN]
 ], function () {
     Route::get('products', 'ProductsController@index');
 });

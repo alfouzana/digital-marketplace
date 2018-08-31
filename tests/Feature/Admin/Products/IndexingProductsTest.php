@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin\Products;
 
 use App\Admin;
 use App\Product;
+use Illuminate\Http\Response;
 use Mtvs\EloquentApproval\ApprovalStatuses;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -76,5 +77,31 @@ class IndexingProductsTest extends TestCase
                 $response->assertDontSee($product->title);
             }
         }
+    }
+
+    /**
+     * @test
+     */
+    public function an_unauthenticated_user_can_not_visit_the_products_index_for_the_admin_panel()
+    {
+        $this->withExceptionHandling();
+
+        $this->get('admin/products')
+            ->assertRedirect('login');
+    }
+
+    /**
+     * @test
+     */
+    public function a_non_admin_user_can_not_visit_the_products_index_for_the_admin_panel()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs(
+            $this->createNonAdminUser()
+        );
+
+        $this->get('admin/products')
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }

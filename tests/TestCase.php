@@ -5,6 +5,7 @@ namespace Tests;
 use App\Admin;
 use App\Customer;
 use App\User;
+use App\Vendor;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use App\Product;
 
@@ -32,6 +33,13 @@ abstract class TestCase extends BaseTestCase
     {
         return mt_rand(1, 100) <= 50 ?
             factory(Admin::class)->create():
+            factory(Csutomer::class)->create();
+    }
+
+    protected function createNonAdminUser()
+    {
+        return mt_rand(1, 100) <= 50 ?
+            factory(Vendor::class)->create():
             factory(Customer::class)->create();
     }
 
