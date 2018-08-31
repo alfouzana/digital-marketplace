@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
         });
 
         $this->createDemoVendor();
+        $this->createDemoAdmin();
     }
 
     protected function cleanDatabase()
@@ -66,5 +68,14 @@ class DatabaseSeeder extends Seeder
         collect($vendorProducts)->each(function ($product) {
             create_product_files($product->id);
         });
+    }
+
+    protected function createDemoAdmin()
+    {
+        factory(Admin::class)->create([
+            'name' => 'Demo Admin',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('123'),
+        ]);
     }
 }
