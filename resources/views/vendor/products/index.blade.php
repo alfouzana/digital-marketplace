@@ -50,7 +50,7 @@
                         <td>{{ $product->created_at }}</td>
                         <td>
                             <span class="badge badge-{{ $product->approval_context() }}">
-                                {{ $product->approval_lang }}
+                                {{ $product->approval_status }}
                             </span>
                         </td>
                         <td>

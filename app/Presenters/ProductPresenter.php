@@ -42,7 +42,7 @@ class ProductPresenter extends BasePresenter
         return $this->wrappedObject->updated_at->diffForHumans();
     }
 
-    public function approval_lang()
+    public function approval_status()
     {
         return approval_lang($this->wrappedObject->approval_status);
     }
