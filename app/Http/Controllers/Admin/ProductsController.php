@@ -11,10 +11,12 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        return Product::anyApprovalStatus()
+        $products = Product::anyApprovalStatus()
             ->when(\request()->filled('approval_status'), function (Builder $query) {
                 $query->where('approval_status', \request()->input('approval_status'));
             })
             ->paginate();
+
+        return view('admin.products.index', compact('products'));
     }
 }
