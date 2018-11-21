@@ -10,7 +10,7 @@ $factory->define(App\Product::class, function (Faker $faker) {
 
         'body' => $faker->paragraph,
 
-        'price' => $faker->randomFloat(2, 0, 100000000),
+        'price' => $faker->randomFloat(2, 1, 999999.99),
 
         'user_id' => function() {
             return factory(\App\Vendor::class)->create()->id;

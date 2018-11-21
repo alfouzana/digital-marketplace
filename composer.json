@@ -14,6 +14,7 @@
         "mccool/laravel-auto-presenter": "^6.2",
         "mtvs/eloquent-approval": "^1.0",
         "nanigans/single-table-inheritance": "0.8.*",
+        "stripe/stripe-php": "^6.24",
         "vinkla/hashids": "^3.3"
     },
     "require-dev": {

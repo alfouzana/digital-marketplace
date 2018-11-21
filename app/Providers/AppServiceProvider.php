@@ -6,6 +6,7 @@ use App\Category;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Request;
+use Stripe\Stripe;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
 
             $view['category_options'] = $category_options;
         });
+
+        Stripe::setApiKey(config('services.stripe.secret'));
     }
 
     /**
