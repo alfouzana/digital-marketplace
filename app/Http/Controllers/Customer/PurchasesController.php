@@ -7,11 +7,17 @@ use App\Purchase;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Stripe\Charge;
+use Vinkla\Hashids\Facades\Hashids;
 
 class PurchasesController extends Controller
 {
-    public function store(Product $product, Request $request)
+    public function store(Request $request)
     {
+        // todo: Abort when the product doesn;t exist
+        $product = Product::find(
+            Hashids::decode($request['product'])[0]
+        );
+
         // todo: validaton
 
         // todo: Improve product price conversion to stripe amount

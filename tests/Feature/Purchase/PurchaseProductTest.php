@@ -6,6 +6,7 @@ use App\Customer;
 use App\Product;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Vinkla\Hashids\Facades\Hashids;
 
 class PurchaseProductTest extends TestCase
 {
@@ -22,7 +23,7 @@ class PurchaseProductTest extends TestCase
             factory(Customer::class)->create()
         );
 
-        $this->post('customer/purchases/'.$product->getRouteKey(), [
+        $this->post('customer/purchases?product='.Hashids::encode($product->id), [
             'stripeToken' => 'tok_visa'
         ]);
 

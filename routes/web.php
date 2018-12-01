@@ -77,7 +77,7 @@ Route::group([
     'prefix' => 'customer',
     'namespace' => 'Customer',
 ], function () {
-    Route::post('purchases/{product}', 'PurchasesController@store');
+    Route::post('purchases', 'PurchasesController@store');
 });
 
 Route::group([
