@@ -34,4 +34,45 @@ class PurchaseProductTest extends TestCase
             'created_at' => now(),
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function a_customer_can_not_purchase_a_product_that_is_not_available()
+    {
+        $this->actingAs(
+            factory(Customer::class)->create()
+        );
+
+        $this->post('customer/purchases', [
+            'stripeToken' => 'tok_visa'
+        ])->assertRedirect('/');
+
+        $this->post('customer/purchases?product='.Hashids::encode('123'), [
+            'stripeToken' => 'tok_visa'
+        ], [
+            'referer' => url('product_uri')
+        ])->assertRedirect('/');
+
+        $product = create_pending_product();
+        $this->post('customer/purchases?product='.Hashids::encode($product->id), [
+            'stripeToken' => 'tok_visa'
+        ], [
+            'referer' => $product->url()
+        ])->assertRedirect('/');
+
+        $product = create_rejected_product();
+        $this->post('customer/purchases?product='.Hashids::encode($product->id), [
+            'stripeToken' => 'tok_visa'
+        ], [
+            'referer' => $product->url()
+        ])->assertRedirect('/');
+
+        with($product = create_approved_product())->delete();
+        $this->post('customer/purchases?product='.Hashids::encode($product->id), [
+            'stripeToken' => 'tok_visa'
+        ], [
+            'referer' => $product->url()
+        ])->assertRedirect('/');
+    }
 }

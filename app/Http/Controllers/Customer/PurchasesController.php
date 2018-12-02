@@ -13,12 +13,13 @@ class PurchasesController extends Controller
 {
     public function store(Request $request)
     {
-        // todo: Abort when the product doesn;t exist
         $product = Product::find(
-            Hashids::decode($request['product'])[0]
+            @Hashids::decode($request['product'])[0]
         );
 
-        // todo: validaton
+        if (! $product) {
+            return redirect('/');
+        }
 
         // todo: Improve product price conversion to stripe amount
         // todo: Supprot different currencies
