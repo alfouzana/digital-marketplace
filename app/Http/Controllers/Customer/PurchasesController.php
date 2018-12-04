@@ -46,5 +46,6 @@ class PurchasesController extends Controller
             'created_at' => now(),
         ]);
 
+        return redirect('customer/purchases');
     }
 }

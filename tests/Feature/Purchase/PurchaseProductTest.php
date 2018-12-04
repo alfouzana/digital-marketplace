@@ -23,9 +23,11 @@ class PurchaseProductTest extends TestCase
             factory(Customer::class)->create()
         );
 
-        $this->post('customer/purchases?product='.Hashids::encode($product->id), [
+        $response = $this->post('customer/purchases?product='.Hashids::encode($product->id), [
             'stripeToken' => 'tok_visa'
         ]);
+
+        $response->assertRedirect('customer/purchases');
 
         $this->assertDatabaseHas('purchases', [
             'user_id' => auth()->id(),
