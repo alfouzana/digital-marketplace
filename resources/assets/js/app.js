@@ -21,4 +21,24 @@ const app = new Vue({
     el: '#app'
 });
 
+$('#purchase-form').each(function () {
+    let $this = $(this);
+    let $stripeScript = $('<script>');
+
+    $stripeScript.attr('class', 'stripe-button');
+    $stripeScript.attr('src', 'https://checkout.stripe.com/checkout.js');
+    $stripeScript.attr('data-key', $this.data('stripeKey'));
+    $stripeScript.attr('data-amount', $this.data('stripeAmount'));
+    // todo: support for multiple currencies
+    $stripeScript.attr('data-currency', 'usd');
+    $stripeScript.attr('data-name', $this.data('stripeName'));
+    $stripeScript.attr('data-description', $this.data('stripeDescription'));
+    // todo: Support for custom stripe image
+    $stripeScript.attr('data-image', 'https://stripe.com/img/documentation/checkout/marketplace.png');
+    $stripeScript.attr('data-locale', 'auto');
+
+    $this.append($stripeScript);
+});
+
+
 $('[title]').tooltip();

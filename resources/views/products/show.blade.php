@@ -39,9 +39,20 @@
                             <i class="far fa-tag"></i> {{ $product->price }}
                         </div>
 
-                        <button type="button"
-                                class="btn btn-primary w-100"
-                        >Purchase</button>
+                        {{--<button type="button"--}}
+                                {{--class="btn btn-primary w-100"--}}
+                        {{-->Purchase</button>--}}
+
+                        <form id="purchase-form"
+                              action="{{ url('customer/purchases?product='.Hashids::encode($product->id)) }}"
+                              method="POST"
+                              {{-- todo: improve the conversion of the price to the stripe amount--}}
+                              data-stripe-name="{{ config('app.name') }}"
+                              data-stripe-description="{{ $product->title }}"
+                              data-stripe-key="{{ config('services.stripe.key') }}"
+                              data-stripe-amount="{{ $product->getAttribute('price') * 100 }}">
+                            {{ csrf_field() }}
+                        </form>
                     </div>
                 </div>
             </div>
