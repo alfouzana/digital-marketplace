@@ -22,6 +22,11 @@ class PurchasesController extends Controller
             return redirect('/');
         }
 
+        if ($this->currentUserHasAlreadyBoughtTheProduct($product)) {
+            flash(__('Already has been purchased!'))->error();
+
+            return redirect($product->url());
+        }
 
         try {
             // todo: Improve product price conversion to stripe amount
@@ -47,5 +52,11 @@ class PurchasesController extends Controller
         ]);
 
         return redirect('customer/purchases');
+    }
+
+    protected function currentUserHasAlreadyBoughtTheProduct(Product $product): bool
+    {
+        return (bool) auth()->user()->purchasedProducts()
+            ->where('products.id', $product->id)->count();
     }
 }

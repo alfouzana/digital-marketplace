@@ -14,11 +14,12 @@ class CreatePurchasesTable extends Migration
     public function up()
     {
         Schema::create('purchases', function (Blueprint $table) {
-            $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('product_id');
             $table->decimal('amount', 15);
             $table->timestamp('created_at');
+
+            $table->unique(['user_id', 'product_id']);
         });
     }
 

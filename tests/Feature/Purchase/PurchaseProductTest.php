@@ -77,4 +77,27 @@ class PurchaseProductTest extends TestCase
             'referer' => $product->url()
         ])->assertRedirect('/');
     }
+
+    /**
+     * @test
+     */
+    public function a_customer_can_not_purchase_a_product_multiple_times()
+    {
+        $product = create_approved_product();
+
+        $customer = factory(Customer::class)->create();
+
+        $customer->purchasedProducts()->attach($product->id, [
+            'amount' => $product->price,
+            'created_at' => now(),
+        ]);
+
+        $this->actingAs($customer);
+
+        $response = $this->post('customer/purchases?product='.Hashids::encode($product->id), [
+            'stripeToken' => 'tok_visa'
+        ]);
+
+        $response->assertRedirect($product->url());
+    }
 }
