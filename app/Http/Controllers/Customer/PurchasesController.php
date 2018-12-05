@@ -6,6 +6,7 @@ use App\Product;
 use App\Purchase;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Stripe\Charge as StripeCharge;
 use Stripe\Error\Card as StripCardException;
 use Vinkla\Hashids\Facades\Hashids;
@@ -28,7 +29,14 @@ class PurchasesController extends Controller
             return redirect($product->url());
         }
 
+        DB::beginTransaction();
+
         try {
+            // First we attempt to add the product the customer purchases
+            // so if any problem occurs in this process we haven't charged
+            // the customer yet
+            auth()->user()->makePurchase($product);
+
             // todo: Improve product price conversion to stripe amount
             // todo: Supprot different currencies
             // todo: Consider max limit of stripe amount
@@ -38,15 +46,21 @@ class PurchasesController extends Controller
                 'description' => sprintf('Purchase at "%s"', config('app.name')) ,
                 'source' => $request['stripeToken'],
             ]);
-        } catch (StripCardException $exception) {
-            $message = $exception->getJsonBody()['error']['message'];
+        } catch (\Exception $exception) {
+            DB::rollback();
 
-            flash($message)->error();
+            if ($exception instanceof StripCardException) {
+                $message = $exception->getJsonBody()['error']['message'];
 
-            return back();
+                flash($message)->error();
+
+                return back();
+            }
+
+            throw $exception;
         }
 
-        auth()->user()->makePurchase($product);
+        DB::commit();
 
         return redirect('customer/purchases');
     }

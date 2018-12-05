@@ -23,6 +23,7 @@ class PurchaseProductTest extends TestCase
             factory(Customer::class)->create()
         );
 
+        $now = now();
         $response = $this->post('customer/purchases?product='.Hashids::encode($product->id), [
             'stripeToken' => 'tok_visa'
         ]);
@@ -33,7 +34,7 @@ class PurchaseProductTest extends TestCase
             'user_id' => auth()->id(),
             'product_id' => $product->id,
             'amount' => $product->price,
-            'created_at' => now(),
+            'created_at' => $now,
         ]);
     }
 
