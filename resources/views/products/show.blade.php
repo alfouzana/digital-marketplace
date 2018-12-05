@@ -46,7 +46,6 @@
                         <form id="purchase-form"
                               action="{{ url('customer/purchases?product='.Hashids::encode($product->id)) }}"
                               method="POST"
-                              {{-- todo: improve the conversion of the price to the stripe amount--}}
                               data-stripe-name="{{ config('app.name') }}"
                               data-stripe-description="{{ $product->title }}"
                               data-stripe-key="{{ config('services.stripe.key') }}"

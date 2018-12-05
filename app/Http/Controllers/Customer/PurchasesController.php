@@ -37,8 +37,6 @@ class PurchasesController extends Controller
             // the customer yet
             auth()->user()->makePurchase($product);
 
-            // todo: Improve product price conversion to stripe amount
-            // todo: Supprot different currencies
             // todo: Consider max limit of stripe amount
             StripeCharge::create([
                 'amount' => $product->price * 100,
