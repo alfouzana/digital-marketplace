@@ -22,7 +22,7 @@ class PurchasesController extends Controller
             return redirect('/');
         }
 
-        if ($this->currentUserHasAlreadyBoughtTheProduct($product)) {
+        if (auth()->user()->hasPurchased($product)) {
             flash(__('Already has been purchased!'))->error();
 
             return redirect($product->url());
@@ -46,17 +46,8 @@ class PurchasesController extends Controller
             return back();
         }
 
-        auth()->user()->purchasedProducts()->attach($product->id, [
-            'amount' => $product->price,
-            'created_at' => now(),
-        ]);
+        auth()->user()->makePurchase($product);
 
         return redirect('customer/purchases');
-    }
-
-    protected function currentUserHasAlreadyBoughtTheProduct(Product $product): bool
-    {
-        return (bool) auth()->user()->purchasedProducts()
-            ->where('products.id', $product->id)->count();
     }
 }

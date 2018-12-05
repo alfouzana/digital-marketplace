@@ -87,10 +87,7 @@ class PurchaseProductTest extends TestCase
 
         $customer = factory(Customer::class)->create();
 
-        $customer->purchasedProducts()->attach($product->id, [
-            'amount' => $product->price,
-            'created_at' => now(),
-        ]);
+        $customer->makePurchase($product);
 
         $this->actingAs($customer);
 

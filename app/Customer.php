@@ -16,4 +16,18 @@ class Customer extends User
             'user_id'
         );
     }
+
+    public function makePurchase(Product $product): void
+    {
+        $this->purchasedProducts()->attach($product->id, [
+            'amount' => $product->price,
+            'created_at' => now(),
+        ]);
+    }
+
+    public function hasPurchased(Product $product): bool
+    {
+        return (bool) $this->purchasedProducts()
+            ->where('products.id', $product->id)->count();
+    }
 }
