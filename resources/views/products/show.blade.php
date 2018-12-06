@@ -39,19 +39,29 @@
                             <i class="far fa-tag"></i> {{ $product->price }}
                         </div>
 
-                        {{--<button type="button"--}}
-                                {{--class="btn btn-primary w-100"--}}
-                        {{-->Purchase</button>--}}
 
-                        <form id="purchase-form"
-                              action="{{ url('customer/purchases?product='.Hashids::encode($product->id)) }}"
-                              method="POST"
-                              data-stripe-name="{{ config('app.name') }}"
-                              data-stripe-description="{{ $product->title }}"
-                              data-stripe-key="{{ config('services.stripe.key') }}"
-                              data-stripe-amount="{{ $product->getAttribute('price') * 100 }}">
-                            {{ csrf_field() }}
-                        </form>
+                        @if(! auth()->check())
+                            <div class="alert alert-info">
+                                @lang('To get this product, please:')
+                                <a href="{{ url('login') }}">@lang('login')</a>
+                                @lang('or')
+                                <a href="{{ url('register') }}">@lang('register')</a>
+                            </div>
+                        @elseif(! auth()->user()->hasPurchased($product->getWrappedObject()) )
+                            <form id="purchase-form"
+                                  action="{{ url('customer/purchases?product='.Hashids::encode($product->id)) }}"
+                                  method="POST"
+                                  data-stripe-name="{{ config('app.name') }}"
+                                  data-stripe-description="{{ $product->title }}"
+                                  data-stripe-key="{{ config('services.stripe.key') }}"
+                                  data-stripe-amount="{{ $product->getAttribute('price') * 100 }}">
+                                {{ csrf_field() }}
+                            </form>
+                        @else
+                            <a href="#" class="btn btn-success w-100">
+                                <i class="fa fa-download"></i> @lang('Download')
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
