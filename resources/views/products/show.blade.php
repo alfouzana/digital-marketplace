@@ -56,6 +56,9 @@
                                   data-stripe-key="{{ config('services.stripe.key') }}"
                                   data-stripe-amount="{{ $product->getAttribute('price') * 100 }}">
                                 {{ csrf_field() }}
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-shopping-cart"></i> @lang('Purchase')
+                                </button>
                             </form>
                         @else
                             <a href="#" class="btn btn-success w-100">
