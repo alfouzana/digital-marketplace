@@ -55,11 +55,11 @@
 
 <div class="container">
     <ul class="nav nav-pills">
-        @foreach(get_secondary_navigation(str_before(Request::path(), '/')) as $name => $url)
+        @foreach(\App\Category::all() as $category)
             <li class="nav-item">
-                <a href="{{ $url }}"
-                   class="nav-link{{Request::url() == $url ? ' active' : '' }}"
-                >{{ $name }}</a>
+                <a href="{{ $category->url() }}"
+                   class="nav-link{{ Request::url() == $category->url() ? ' active' : '' }}"
+                >{{ $category->name }}</a>
             </li>
         @endforeach
     </ul>
