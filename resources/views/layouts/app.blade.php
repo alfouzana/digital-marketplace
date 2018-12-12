@@ -16,7 +16,7 @@
 <body>
     <div id="app">
         @section('header')
-            @include('layouts.header')
+            @include('layouts._header')
         @show
 
         <div class="container">
