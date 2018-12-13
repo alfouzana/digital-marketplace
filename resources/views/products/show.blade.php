@@ -39,9 +39,34 @@
                             <i class="far fa-tag"></i> {{ $product->price }}
                         </div>
 
-                        <button type="button"
-                                class="btn btn-primary w-100"
-                        >Purchase</button>
+
+                        @if(! auth()->check())
+                            <div class="alert alert-info">
+                                @lang('To get this product, please:')
+                                <a href="{{ url('login') }}">@lang('login')</a>
+                                @lang('or')
+                                <a href="{{ url('register') }}">@lang('register')</a>
+                            </div>
+                        @elseif(auth()->user() instanceof \App\Admin)
+                            <a href="#" class="btn btn-success w-100">
+                                <i class="fa fa-download"></i> @lang('Download')
+                            </a>
+                        @elseif(auth()->user() instanceof \App\Vendor)
+                            
+                        @elseif(! auth()->user()->hasPurchased($product->getWrappedObject()) )
+                            <form id="purchase-form"
+                                  action="{{ url('customer/purchases?product='.Hashids::encode($product->id)) }}"
+                                  method="POST">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-shopping-cart"></i> @lang('Purchase')
+                                </button>
+                            </form>
+                        @else
+                            <a href="#" class="btn btn-success w-100">
+                                <i class="fa fa-download"></i> @lang('Download')
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
