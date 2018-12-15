@@ -3,7 +3,7 @@
 @section('header')
     @parent
     <div class="container">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
                 <a href="{{ url('vendor/products') }}"
                    class="nav-link{{ Request::url() == url('vendor/products') ? ' active' : '' }}">
