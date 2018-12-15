@@ -30,4 +30,9 @@ class Customer extends User
         return (bool) $this->purchasedProducts()
             ->where('products.id', $product->id)->count();
     }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class, 'user_id');
+    }
 }

@@ -43,4 +43,10 @@ abstract class TestCase extends BaseTestCase
             factory(Customer::class)->create();
     }
 
+    protected function createNonCustomerUser()
+    {
+        return mt_rand(1, 100) <= 50 ?
+            factory(Admin::class)->create():
+            factory(Vendor::class)->create();
+    }
 }

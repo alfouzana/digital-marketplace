@@ -13,6 +13,20 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class PurchasesController extends Controller
 {
+    public function index()
+    {
+        $purchases = auth()->user()->purchases()
+            ->with([
+                'product' => function ($query) {
+                    $query->withoutGlobalScopes();
+                }
+            ])
+            ->latest('created_at')
+            ->paginate();
+
+        return view('customer.purchases.index', compact('purchases'));
+    }
+
     public function store(Request $request)
     {
         $product = Product::find(

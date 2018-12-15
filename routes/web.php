@@ -76,8 +76,10 @@ Route::group([
 Route::group([
     'prefix' => 'customer',
     'namespace' => 'Customer',
+    'middleware' => ['auth', 'userType:'.UserTypes::CUSTOMER]
 ], function () {
     Route::post('purchases', 'PurchasesController@store');
+    Route::get('purchases', 'PurchasesController@index');
 });
 
 Route::group([
