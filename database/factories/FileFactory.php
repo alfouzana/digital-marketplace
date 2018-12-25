@@ -3,48 +3,32 @@
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
 
-$factory->define(\App\File::class, function (Faker $faker) {
-    return [
-        'product_id' => null,
-        'assoc' => '',
-        'path' => ''
-    ];
-});
+$factory->defineAs(\App\File::class, 'cover', function (Faker $faker) {
+    $name = $faker->word;
 
-$stateDependantFileAttributes = function ($assoc, $disk, $dir, Closure $callback) {
-    list($path, $original_name, $size) = app()->environment('testing') ?
-        ['', '', 0] : [
-            with($file = $callback())->store($dir, $disk),
-            $file->getClientOriginalName(),
-            $file->getSize()
-        ];
+    $file = app()->environment('testing') ?
+            UploadedFile::fake()->image($name.'.jpeg'):
+            new UploadedFile(
+                $faker->image(
+                    null,
+                    640, 480,
+                    'abstract'
+                ),
+                $name.'.jpeg'
+            );
 
-    return compact('assoc', 'disk', 'path', 'original_name', 'size');
-};
-
-$factory->state(\App\File::class, 'cover', function (Faker $faker) use ($stateDependantFileAttributes) {
-    return  $stateDependantFileAttributes('cover', 'public', 'product_covers', function () use ($faker) {
-        return new UploadedFile(
-            $faker->image(
-                null,
-                640, 480,
-                'abstract'
-            ),
-            'cover.jpeg'
-        );
-    });
+    return file_attributes('cover', 'public', 'product_covers', $file);
 });
 
 
-$factory->state(\App\File::class, 'sample', function (Faker $faker) use ($stateDependantFileAttributes) {
-    return $stateDependantFileAttributes('sample', 'public', 'product_samples', function () use ($faker) {
-        return UploadedFile::fake()->create('sample.bin', 500);
-    });
+$factory->defineAs(\App\File::class, 'sample', function (Faker $faker) {
+    $file = UploadedFile::fake()->create($faker->word, 500);
+
+    return file_attributes('sample', 'public', 'product_samples', $file);
 });
 
-$factory->state(\App\File::class, 'product_file', function (Faker $faker) use($stateDependantFileAttributes) {
-    return $stateDependantFileAttributes('product_file', 'local', 'product_files', function () use ($faker) {
-        return UploadedFile::fake()->create('sample.bin', 1000);
-    });
-});
+$factory->defineAs(\App\File::class, 'product_file', function (Faker $faker) {
+    $file = UploadedFile::fake()->create($faker->word, 1000);
 
+    return file_attributes('product_file', 'local', 'product_files', $file);
+});

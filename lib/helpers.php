@@ -53,17 +53,27 @@ function create_pending_product($overrides = [], $times = 1)
 
 function create_product_files($product_id)
 {
-    factory(App\File::class)->states('cover')->create([
+    factory(App\File::class, 'cover')->create([
         'product_id' => $product_id
     ]);
 
-    factory(App\File::class)->states('sample')->create([
+    factory(App\File::class, 'sample')->create([
         'product_id' => $product_id
     ]);
 
-//    factory(App\File::class)->states('main')->create([
+//    factory(App\File::class, 'product_file')->create([
 //        'product_id' => $product_id
 //    ]);
+}
+
+function file_attributes($assoc, $disk, $dir, Illuminate\Http\UploadedFile $file) {
+    list($path, $original_name, $size) = [
+            $file->store($dir, $disk),
+            $file->getClientOriginalName(),
+            $file->getSize()
+        ];
+
+    return compact('assoc', 'disk', 'path', 'original_name', 'size');
 }
 
 function random_user_class()

@@ -30,13 +30,13 @@ class NewProductConfirmationStepTest extends TestCase
                     'user_id'
                 ),
                 'cover_step' => [
-                    'file_id' => $productCoverId = factory(File::class)->states('cover')->create()->id
+                    'file_id' => $productCoverId = factory(File::class, 'cover')->create()->id
                 ],
                 'sample_step' => [
-                    'file_id' => $productSampleId = factory(File::class)->states('sample')->create()->id
+                    'file_id' => $productSampleId = factory(File::class, 'sample')->create()->id
                 ],
                 'product_file_step' => [
-                    'file_id' => $productFileId = factory(File::class)->states('product_file')->create()->id
+                    'file_id' => $productFileId = factory(File::class, 'product_file')->create()->id
                 ]
             ]
         ]);

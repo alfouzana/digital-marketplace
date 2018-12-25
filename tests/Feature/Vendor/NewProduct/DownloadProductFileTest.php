@@ -29,10 +29,8 @@ class DownloadProductFileTest extends TestCase
             'This is only a test.'
         );
 
-        $file = factory(File::class)
-            ->states('product_file')
+        $file = factory(File::class, 'product_file')
             ->create([
-                'disk' => 'local',
                 'path' => 'product_files/download.tst',
                 'original_name' => 'download.tst',
                 'size' => strlen('This is only a test.')
