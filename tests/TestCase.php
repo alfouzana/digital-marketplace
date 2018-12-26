@@ -33,7 +33,7 @@ abstract class TestCase extends BaseTestCase
     {
         return mt_rand(1, 100) <= 50 ?
             factory(Admin::class)->create():
-            factory(Csutomer::class)->create();
+            factory(Customer::class)->create();
     }
 
     protected function createNonAdminUser()
