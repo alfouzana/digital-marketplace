@@ -39,6 +39,11 @@ class Product extends Model implements HasPresenter
         return url("/product/{$this->getAttribute('slug')}/{$this->getRouteKey()}");
     }
 
+    public function fileUrl() 
+    {
+        return url('product/'.$this->getRouteKey().'/file');
+    }
+
     public function sluggable()
     {
         return [

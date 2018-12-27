@@ -26,7 +26,7 @@
                     <td>{{ $purchase->created_at }}</td>
                     <td>{{ $purchase->amount }}</td>
                     <td>
-                        <a href="{{ url('product/'.$purchase->product->getRouteKey().'/file') }}"
+                        <a href="{{ $purchase->product->fileUrl() }}"
                            class="btn btn-sm btn-success" title="@lang('Download')">
                             <i class="fa fa-download"></i>
                         </a>

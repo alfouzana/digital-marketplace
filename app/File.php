@@ -24,8 +24,12 @@ class File extends Model implements HasPresenter
 
     public function url()
     {
-        return Storage::disk($this->getAttribute('disk'))
-            ->url($this->getAttribute('path'));
+        if ($this->assoc == 'product_file') {
+            return null;
+        }
+
+        return Storage::disk($this->disk)
+            ->url($this->path);
     }
 
     public function getContents()

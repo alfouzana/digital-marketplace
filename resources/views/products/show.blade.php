@@ -48,7 +48,7 @@
                                 <a href="{{ url('register') }}">@lang('register')</a>
                             </div>
                         @elseif(auth()->user() instanceof \App\Admin || (auth()->user() instanceof \App\Customer && auth()->user()->hasPurchased($product->getWrappedObject())))
-                            <a href="{{ url('product/'.$product->getRouteKey().'/file') }}" class="btn btn-success w-100">
+                            <a href="{{ $product->fileUrl() }}" class="btn btn-success w-100">
                                 <i class="fa fa-download"></i> @lang('Download')
                             </a>
                         @elseif(auth()->user() instanceof \App\Customer)
