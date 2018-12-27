@@ -22,7 +22,7 @@ class File extends Model implements HasPresenter
         return static::create($attributes);
     }
 
-    public function getUrlAttribute()
+    public function url()
     {
         return Storage::disk($this->getAttribute('disk'))
             ->url($this->getAttribute('path'));

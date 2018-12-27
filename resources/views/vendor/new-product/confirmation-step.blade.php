@@ -18,7 +18,7 @@
                             'class' => 'col-form-label col-lg-4 text-lg-right'
                         ]) }}
                         <div class="col-lg-6">
-                            <img src="{{ $cover->url }}"
+                            <img src="{{ $cover->url() }}"
                                  alt="{{ __('Cover') }}" class="img-thumbnail">
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         ]) }}
                         <div class="col-lg-6">
                             @component('vendor.new-product._file-preview', [
-                                'url' => $sample->url,
+                                'url' => $sample->url(),
                                 'size' => $sample->size
                             ])
                                 {{ $sample->original_name }}
