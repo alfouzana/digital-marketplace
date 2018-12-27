@@ -26,9 +26,10 @@
                     <td>{{ $purchase->created_at }}</td>
                     <td>{{ $purchase->amount }}</td>
                     <td>
-                        <button class="btn btn-sm btn-success" title="@lang('Download')">
+                        <a href="{{ url('product/'.$purchase->product->getRouteKey().'/file') }}"
+                           class="btn btn-sm btn-success" title="@lang('Download')">
                             <i class="fa fa-download"></i>
-                        </button>
+                        </a>
                     </td>
                 </tr>
             @endforeach

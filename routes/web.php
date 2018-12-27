@@ -25,6 +25,9 @@ Route::get('/category/{category}', [
     'uses' => 'ProductsController@index'
 ]);
 
+Route::middleware('auth')
+    ->get('product/{hashid}/file', 'ProductsController@downloadFile');
+
 Route::get('/product/{slug}/{product}', [
     'uses' => 'ProductsController@show'
 ]);

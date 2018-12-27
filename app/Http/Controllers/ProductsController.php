@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Admin;
 use App\Category;
 use App\Product;
+use Hashids;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -30,5 +32,28 @@ class ProductsController extends Controller
         }
 
         return view('products.show', compact('product'));
+    }
+
+    public function downloadFile($hashid)
+    {
+        $product = Product::withTrashed()->findOrFail(
+            @Hashids::decode($hashid)[0]
+        );
+
+        if(
+            ! auth()->user() instanceof Admin &&
+            ! auth()->user()->hasPurchased($product)) {
+            return redirect($product->url());
+        }
+
+        return response(
+            $product->file->getContents(),
+            200,
+            [
+                'Content-Type' => 'application/octet-stream',
+                'Content-Disposition' => 'attachment;filename='.
+                    $product->slug.'.'.$product->file->getExtension()
+            ]
+        );
     }
 }

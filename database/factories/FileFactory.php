@@ -20,7 +20,6 @@ $factory->defineAs(\App\File::class, 'cover', function (Faker $faker) {
     return file_attributes('cover', 'public', 'product_covers', $file);
 });
 
-
 $factory->defineAs(\App\File::class, 'sample', function (Faker $faker) {
     $file = UploadedFile::fake()->create($faker->word, 500);
 

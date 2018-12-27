@@ -61,9 +61,9 @@ function create_product_files($product_id)
         'product_id' => $product_id
     ]);
 
-//    factory(App\File::class, 'product_file')->create([
-//        'product_id' => $product_id
-//    ]);
+   factory(App\File::class, 'product_file')->create([
+       'product_id' => $product_id
+   ]);
 }
 
 function file_attributes($assoc, $disk, $dir, Illuminate\Http\UploadedFile $file) {

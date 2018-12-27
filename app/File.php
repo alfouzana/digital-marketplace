@@ -28,6 +28,16 @@ class File extends Model implements HasPresenter
             ->url($this->getAttribute('path'));
     }
 
+    public function getContents()
+    {
+        return Storage::disk($this->disk)->get($this->path);
+    }
+
+    public function getExtension()
+    {
+        return pathinfo($this->path, PATHINFO_EXTENSION);
+    }
+
     /**
      * Get the presenter class.
      *

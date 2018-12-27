@@ -61,11 +61,11 @@ class Product extends Model implements HasPresenter
             ->where('assoc', 'sample');
     }
 
-//    public function file()
-//    {
-//        return $this->hasOne(File::class)
-//            ->where('assoc', 'main');
-//    }
+    public function file()
+    {
+        return $this->hasOne(File::class)
+            ->where('assoc', 'product_file');
+    }
 
     public function category()
     {

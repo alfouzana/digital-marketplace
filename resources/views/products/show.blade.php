@@ -47,13 +47,11 @@
                                 @lang('or')
                                 <a href="{{ url('register') }}">@lang('register')</a>
                             </div>
-                        @elseif(auth()->user() instanceof \App\Admin)
-                            <a href="#" class="btn btn-success w-100">
+                        @elseif(auth()->user() instanceof \App\Admin || (auth()->user() instanceof \App\Customer && auth()->user()->hasPurchased($product->getWrappedObject())))
+                            <a href="{{ url('product/'.$product->getRouteKey().'/file') }}" class="btn btn-success w-100">
                                 <i class="fa fa-download"></i> @lang('Download')
                             </a>
-                        @elseif(auth()->user() instanceof \App\Vendor)
-                            
-                        @elseif(! auth()->user()->hasPurchased($product->getWrappedObject()) )
+                        @elseif(auth()->user() instanceof \App\Customer)
                             <form id="purchase-form"
                                   action="{{ url('customer/purchases?product='.Hashids::encode($product->id)) }}"
                                   method="POST">
@@ -62,10 +60,6 @@
                                     <i class="fa fa-shopping-cart"></i> @lang('Purchase')
                                 </button>
                             </form>
-                        @else
-                            <a href="#" class="btn btn-success w-100">
-                                <i class="fa fa-download"></i> @lang('Download')
-                            </a>
                         @endif
                     </div>
                 </div>

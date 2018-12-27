@@ -43,6 +43,9 @@ class DatabaseSeeder extends Seeder
 
         \Illuminate\Support\Facades\Storage::disk('public')
             ->deleteDirectory('product_samples');
+
+        \Illuminate\Support\Facades\Storage::disk('local')
+        ->deleteDirectory('product_files');
     }
 
     protected function createDemoVendor()

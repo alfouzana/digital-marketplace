@@ -28,6 +28,7 @@ class Customer extends User
     public function hasPurchased(Product $product): bool
     {
         return (bool) $this->purchasedProducts()
+            ->withoutGlobalScopes()
             ->where('products.id', $product->id)->count();
     }
 
