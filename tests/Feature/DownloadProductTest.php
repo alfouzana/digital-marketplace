@@ -33,7 +33,7 @@ class DownloadProductTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->get('product/'.$product->getRouteKey().'/file')
+        $this->get($product->fileUrl())
             ->assertSee($product->file->getContents())
             ->assertHeader(
                 'content-disposition',
@@ -59,7 +59,7 @@ class DownloadProductTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->get('product/'.$product->getRouteKey().'/file')
+        $this->get($product->fileUrl())
             ->assertRedirect($product->url());
     }
 
@@ -79,7 +79,7 @@ class DownloadProductTest extends TestCase
             factory(Admin::class)->create()
         );
 
-        $this->get('product/'.$product->getRouteKey().'/file')
+        $this->get($product->fileUrl())
             ->assertSee($product->file->getContents())
             ->assertHeader(
                 'content-disposition',
@@ -103,7 +103,7 @@ class DownloadProductTest extends TestCase
         $product = create_approved_product();
         create_product_files($product->id);
 
-        $this->get('product/'.$product->getRouteKey().'/file')
+        $this->get($product->fileUrl())
             ->assertRedirect('login');
     }
 
@@ -127,7 +127,7 @@ class DownloadProductTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->get('product/'.$product->getRouteKey().'/file')
+        $this->get($product->fileUrl())
             ->assertSee($product->file->getContents())
             ->assertHeader(
                 'content-disposition',
@@ -159,12 +159,12 @@ class DownloadProductTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->get('product/'.$product->getRouteKey().'/file')
+        $this->get($product->fileUrl())
             ->assertStatus(404);
 
         $product->suspend();
 
-        $this->get('product/'.$product->getRouteKey().'/file')
+        $this->get($product->fileUrl())
             ->assertStatus(404);
     }
 }
