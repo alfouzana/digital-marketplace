@@ -167,4 +167,19 @@ class DownloadProductTest extends TestCase
         $this->get($product->fileUrl())
             ->assertStatus(404);
     }
+
+    /**
+     * @test
+     */
+    public function a_user_is_notified_when_attempts_to_download_the_file_of_a_non_product()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs(
+            factory(Customer::class)->create()
+        );
+
+        $this->get('product/'.\Hashids::encode('123').'/file')
+            ->assertStatus(404);
+    }
 }
