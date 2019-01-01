@@ -5,21 +5,12 @@ namespace App;
 use App\Enums\UserTypes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable, SingleTableInheritanceTrait;
+    use Notifiable;
 
     protected $table = 'users';
-
-    protected static $singleTableTypeField = 'type';
-
-    protected static $singleTableSubclasses = [
-        Admin::class,
-        Vendor::class,
-        Customer::class,
-    ];
 
     /**
      * The attributes that are mass assignable.
@@ -37,12 +28,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
-    ];
-
-    protected $typesToHomePaths = [
-        UserTypes::ADMIN => '/admin',
-        UserTypes::VENDOR => '/vendor',
-        UserTypes::CUSTOMER => '/customer'
     ];
 
     public function homeUrl()

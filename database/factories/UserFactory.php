@@ -24,14 +24,10 @@ $factory->define(\App\User::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(\App\Admin::class, function (Faker $faker) {
-    return factory(\App\User::class)->raw();
-});
+$factory->state(\App\User::class, 'normal', [
+    'is_admin' => false,
+]);
 
-$factory->define(\App\Vendor::class, function (Faker $faker) {
-    return factory(\App\User::class)->raw();
-});
-
-$factory->define(\App\Customer::class, function (Faker $faker) {
-    return factory(\App\User::class)->raw();
-});
+$factory->state(\App\User::class, 'admin', [
+    'is_admin' => true,
+]);
