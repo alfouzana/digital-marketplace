@@ -2,9 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Admin;
-use App\Customer;
-use App\Vendor;
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,12 +15,10 @@ class UserTest extends TestCase
      */
     public function it_can_determine_the_home_url()
     {
-        $adminUser = factory(Admin::class)->create();
-        $vendorUser = factory(Vendor::class)->create();
-        $customerUser = factory(Customer::class)->create();
+        $user = factory(User::class)->make();
+        $admin = factory(User::class)->states('admin')->make();
 
-        $this->assertEquals(url('/admin'), $adminUser->homeUrl());
-        $this->assertEquals(url('/vendor'), $vendorUser->homeUrl());
-        $this->assertEquals(url('/customer'), $customerUser->homeUrl());
+        $this->assertEquals(url('/user'), $user->homeUrl());
+        $this->assertEquals(url('/admin'), $admin->homeUrl());
     }
 }

@@ -32,6 +32,6 @@ class User extends Authenticatable
 
     public function homeUrl()
     {
-        return url($this->typesToHomePaths[$this->getAttribute('type')]);
+        return $this->is_admin ? url('admin') : url('user');
     }
 }
