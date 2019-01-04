@@ -35,7 +35,7 @@ Route::get('/product/{slug}/{product}', [
 Route::group([
     'prefix' => '/vendor',
     'namespace' => 'Vendor',
-    'middleware' => ['auth', 'userType:'. UserTypes::VENDOR],
+    'middleware' => ['auth',],
 ], function () {
     Route::get('/products', [
         'uses' => 'ProductsController@index'
@@ -79,7 +79,7 @@ Route::group([
 Route::group([
     'prefix' => 'customer',
     'namespace' => 'Customer',
-    'middleware' => ['auth', 'userType:'.UserTypes::CUSTOMER]
+    'middleware' => ['auth',]
 ], function () {
     Route::post('purchases', 'PurchasesController@store');
     Route::get('purchases', 'PurchasesController@index');
@@ -88,7 +88,7 @@ Route::group([
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
-    'middleware' => ['auth', 'userType:'.UserTypes::ADMIN]
+    'middleware' => ['auth',]
 ], function () {
     Route::get('products', 'ProductsController@index');
 });

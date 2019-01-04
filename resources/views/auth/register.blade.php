@@ -70,32 +70,6 @@
                             </div>
                         </div>
 
-                        <fieldset class="form-group">
-                            <div class="row">
-                                <legend class="col-form-label col-lg-4 pt-0">@lang('Type')</legend>
-                                <div class="col-lg-8">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio"
-                                               id="type-vendor" name="type"
-                                               value="{{ \App\Enums\UserTypes::VENDOR }}"
-                                               required>
-                                        <label class="form-check-label" for="type-vendor">
-                                            @lang('Vendor')
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio"
-                                               id="type-customer" name="type"
-                                               value="{{ \App\Enums\UserTypes::CUSTOMER }}"
-                                               required>
-                                        <label class="form-check-label" for="type-customer">
-                                            @lang('Customer')
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-
                         <div class="form-group row">
                             <div class="col-lg-8 offset-lg-4">
                                 <button type="submit" class="btn btn-primary">
