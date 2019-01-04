@@ -17,7 +17,7 @@ class LoginTest extends TestCase
     public function a_user_can_view_login_page()
     {
         $this->get('/login')
-            ->assertSee('login-form');
+            ->assertSee(__('Login'));
     }
 
     /**
@@ -25,40 +25,89 @@ class LoginTest extends TestCase
      */
     public function a_user_can_login()
     {
-        $user = factory(random_user_class())->create();
+        $user = factory(User::class)->create();
 
         $this->post('/login', [
             'email' => $user['email'],
             'password' => 'secret'
-        ]);
+        ])->assertRedirect('/user');
 
-        $this->assertTrue(Auth::check());
+        $this->assertEquals($user->id, Auth::user()->id);
     }
 
     /**
      * @test
      */
-    public function a_user_should_be_redirected_to_their_home_after_login()
+    public function an_admin_can_login()
     {
-        $user = factory(random_user_class())->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $this->post('/login', [
-            'email' => $user['email'],
+            'email' => $admin['email'],
             'password' => 'secret'
-        ])->assertRedirect($user->homeUrl());
+        ])->assertRedirect('/admin');
+
+        $this->assertEquals($admin->id, Auth::user()->id);
     }
 
     /**
      * @test
      */
-    public function an_authenticated_user_should_be_redirected_to_their_home_if_attempts_to_login()
+    public function a_user_can_not_login_with_incorrect_data()
     {
-        $user = $this->signIn();
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'Wrong',
+        ], [
+            'referer' => url('/login'),
+        ])->assertRedirect('/login');
+
+        $this->assertFalse(Auth::check());
+
+        $this->post('/login', [
+            'email' => $user->name,
+            'password' => 'secret',
+        ], [
+            'referer' => url('/login'),
+        ])->assertRedirect('/login');
+
+        $this->assertFalse(Auth::check());
+    }
+
+    /**
+     * @test
+     */
+    public function an_authenticated_user_should_be_redirected_when_attempts_to_login()
+    {
+        $this->actingAs(
+            factory(User::class)->create()
+        );
 
         $this->get('/login')
-            ->assertRedirect($user->homeUrl());
+            ->assertRedirect('/user');
 
         $this->post('/login')
-            ->assertRedirect($user->homeUrl());
+            ->assertRedirect('/user');
+    }
+
+
+    /**
+     * @test
+     */
+    public function an_authenticated_admin_should_be_redirected_when_attempts_to_login()
+    {
+        $this->actingAs(
+            factory(User::class)->states('admin')->create()
+        );
+
+        $this->get('/login')
+            ->assertRedirect('/admin');
+
+        $this->post('/login')
+            ->assertRedirect('/admin');
     }
 }
