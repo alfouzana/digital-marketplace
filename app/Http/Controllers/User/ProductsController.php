@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vendor;
+namespace App\Http\Controllers\User;
 
 use App\Enums\UserTypes;
 use Illuminate\Http\Request;
@@ -12,9 +12,9 @@ class ProductsController extends Controller
 {
     public function index(Request $request)
     {
-        $vendor = Auth::user();
-
-        $query = $vendor->products()->anyApprovalStatus();
+        $query = Auth::user()
+            ->products()
+            ->anyApprovalStatus();
 
         if ($request->has('archived')) {
             $query->onlyTrashed();
@@ -22,6 +22,6 @@ class ProductsController extends Controller
 
         $products = $query->paginate();
 
-        return view('vendor.products.index', compact('products'));
+        return view('user.products.index', compact('products'));
     }
 }

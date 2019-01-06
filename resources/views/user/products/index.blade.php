@@ -1,4 +1,4 @@
-@extends('layouts.vendor')
+@extends('user.layout')
 
 @section('title', !Request::has('archived') ? __('My Products') : __('Archived Products'))
 

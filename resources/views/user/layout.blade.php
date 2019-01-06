@@ -5,8 +5,8 @@
     <div class="container">
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
-                <a href="{{ url('vendor/products') }}"
-                   class="nav-link{{ Request::url() == url('vendor/products') ? ' active' : '' }}">
+                <a href="{{ url('/user/products') }}"
+                   class="nav-link{{ Request::url() == url('/user/products') ? ' active' : '' }}">
                     @lang('My Products')
                 </a>
             </li>

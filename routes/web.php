@@ -33,8 +33,8 @@ Route::get('/product/{slug}/{product}', [
 ]);
 
 Route::group([
-    'prefix' => '/vendor',
-    'namespace' => 'Vendor',
+    'prefix' => '/user',
+    'namespace' => 'User',
     'middleware' => ['auth',],
 ], function () {
     Route::get('/products', [

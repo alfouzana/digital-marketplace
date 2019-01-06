@@ -2,10 +2,8 @@
 
 namespace Tests\Feature\Vendor;
 
-use App\Admin;
-use App\Customer;
+use App\User;
 use App\Product;
-use App\Vendor;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -35,25 +33,25 @@ class IndexingProductsTest extends TestCase
     /**
      * @test
      */
-    public function a_vendor_can_view_their_products_with_any_approval_status()
+    public function an_user_can_view_their_products_with_any_approval_status()
     {
-        $vendorUser = factory(Vendor::class)->create();
+        $user = factory(User::class)->create();
 
         $approvedProduct = create_approved_product([
-            'user_id' => $vendorUser->id
+            'user_id' => $user->id
         ]);
 
         $pendingProduct = create_pending_product([
-            'user_id' => $vendorUser->id
+            'user_id' => $user->id
         ]);
 
         $rejectedProduct = create_rejected_product([
-            'user_id' => $vendorUser->id
+            'user_id' => $user->id
         ]);
 
-        $this->signIn($vendorUser);
+        $this->actingAs($user);
 
-        $this->get('/vendor/products')
+        $this->get('/user/products')
             ->assertSee($approvedProduct->title)
             ->assertSee($pendingProduct->title)
             ->assertSee($rejectedProduct->title);

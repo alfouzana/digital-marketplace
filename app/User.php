@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Enums\UserTypes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
 
 class User extends Authenticatable
 {
@@ -26,5 +26,10 @@ class User extends Authenticatable
     public function homeUrl()
     {
         return $this->is_admin ? url('admin') : url('user');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }
