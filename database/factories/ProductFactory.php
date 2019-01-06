@@ -13,7 +13,7 @@ $factory->define(App\Product::class, function (Faker $faker) {
         'price' => $faker->randomFloat(2, 1, 999999.99),
 
         'user_id' => function() {
-            return factory(\App\Vendor::class)->create()->id;
+            return factory(\App\User::class)->create()->id;
         },
 
         'category_id' => function() {

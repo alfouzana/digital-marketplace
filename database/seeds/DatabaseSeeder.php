@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
            create_product_files($product->id);
         });
 
-        $this->createDemoVendor();
+        $this->createDemoUser();
         $this->createDemoAdmin();
     }
 
@@ -48,36 +48,36 @@ class DatabaseSeeder extends Seeder
         ->deleteDirectory('product_files');
     }
 
-    protected function createDemoVendor()
+    protected function createDemoUser()
     {
-        $vendor = factory(\App\Vendor::class)->create([
-            'name' => 'Demo Vendor',
-            'email' => 'vendor@example.com',
+        $user = factory(\App\User::class)->create([
+            'name' => 'John Doe',
+            'email' => 'jdoe@example.com',
             'password' => bcrypt('123')
         ]);
 
-        $vendorProducts[] = create_pending_product([
-            'user_id' => $vendor->id,
+        $products[] = create_pending_product([
+            'user_id' => $user->id,
         ]);
 
-        $vendorProducts[] = create_approved_product([
-            'user_id' => $vendor->id,
+        $products[] = create_approved_product([
+            'user_id' => $user->id,
         ]);
 
-        $vendorProducts[] = create_rejected_product([
-            'user_id'  =>$vendor->id,
+        $products[] = create_rejected_product([
+            'user_id' => $user->id,
         ]);
 
-        collect($vendorProducts)->each(function ($product) {
+        collect($products)->each(function ($product) {
             create_product_files($product->id);
         });
     }
 
     protected function createDemoAdmin()
     {
-        factory(Admin::class)->create([
-            'name' => 'Demo Admin',
-            'email' => 'admin@example.com',
+        factory(App\User::class)->states('admin')->create([
+            'name' => 'Richard Roe',
+            'email' => 'rroe@example.com',
             'password' => bcrypt('123'),
         ]);
     }
