@@ -1,34 +1,15 @@
 <?php
 
-namespace Tests\Feature\Vendor;
+namespace Tests\Feature\User\Products;
 
 use App\User;
 use App\Product;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class IndexingProductsTest extends TestCase
+class IndexTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @test
-     */
-    public function a_non_vendor_user_may_not_view_vendor_products()
-    {
-        $this->withExceptionHandling();
-
-        // unauthenticated attempt
-        $this->get('/vendor/products')
-            ->assertRedirect('/login');
-
-        // non vendor attempt
-        $this->actingAs(
-            $this->createNonVendorUser()
-        );
-        $this->get('/vendor/products')
-            ->assertStatus(403);
-    }
 
     /**
      * @test
@@ -60,40 +41,65 @@ class IndexingProductsTest extends TestCase
     /**
      * @test
      */
-    public function a_vendor_may_not_view_products_not_belong_to_them()
+    public function a_user_does_not_see_others_products_in_their_products_index()
     {
-        $vendorUser = factory(Vendor::class)->create();
+        $user = factory(User::class)->create();
 
-        $notBelongingProduct = factory(Product::class)->create();
+        $product = create_approved_product();
 
-        $this->signIn($vendorUser);
+        $this->actingAs($user);
 
-        $this->get('/vendor/products')
-            ->assertDontSee($notBelongingProduct->title);
+        $this->get('/user/products')
+            ->assertDontSee($product->title);
     }
     
     /**
      * @test
      */
-    public function a_vendor_can_request_to_view_their_archived_products()
+    public function a_user_can_request_to_view_their_archived_products()
     {
-        $vendorUser = factory(Vendor::class)->create();
+        $user = factory(User::class)->create();
 
         with($archivedProduct = factory(Product::class)->create([
-            'user_id' => $vendorUser->id,
+            'user_id' => $user->id,
         ]))->delete();
 
         $notArchivedProduct = factory(Product::class)->create([
-            'user_id' => $vendorUser->id,
+            'user_id' => $user->id,
         ]);
 
-        $this->signIn($vendorUser);
+        $this->actingAs($user);
 
-        $this->get('/vendor/products')
+        $this->get('/user/products')
             ->assertDontSee($archivedProduct->title);
 
-        $this->get('/vendor/products?archived')
+        $this->get('/user/products?archived')
             ->assertSee($archivedProduct->title)
             ->assertDontSee($notArchivedProduct->title);
+    }
+
+    /**
+     * @test
+     */
+    public function an_unauthenticated_user_cannot_access_to_the_user_products_index()
+    {
+        $this->withExceptionHandling();
+
+        $this->get('/user/products')
+            ->assertRedirect('/login');
+    }           
+
+    /**
+     * @test
+     */
+    public function an_admin_user_cannot_access_to_the_user_products_index()
+    {
+        $admin = factory(User::class)
+            ->states('admin')->create();
+
+        $this->actingAs($admin);
+
+        $this->get('/user/products')
+            ->assertRedirect('/admin');
     }
 }
