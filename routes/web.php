@@ -35,7 +35,7 @@ Route::get('/product/{slug}/{product}', [
 Route::group([
     'prefix' => '/user',
     'namespace' => 'User',
-    'middleware' => ['auth',],
+    'middleware' => ['auth', 'user'],
 ], function () {
     Route::get('/products', [
         'uses' => 'ProductsController@index'

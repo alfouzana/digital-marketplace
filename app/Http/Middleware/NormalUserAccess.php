@@ -2,12 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\UserTypes;
-use App\Vendor;
 use Closure;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserTypeMiddleware
+class NormalUserAccess
 {
     use HandlesAuthorization;
 
@@ -18,9 +16,9 @@ class UserTypeMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $userType)
+    public function handle($request, Closure $next)
     {
-        if ($request->user()->type != $userType) {
+        if ($request->user()->is_admin) {
             $this->deny();
         }
 

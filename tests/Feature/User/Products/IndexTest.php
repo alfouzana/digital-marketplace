@@ -94,12 +94,14 @@ class IndexTest extends TestCase
      */
     public function an_admin_user_cannot_access_to_the_user_products_index()
     {
+        $this->withExceptionHandling();
+        
         $admin = factory(User::class)
             ->states('admin')->create();
 
         $this->actingAs($admin);
 
         $this->get('/user/products')
-            ->assertRedirect('/admin');
+            ->assertStatus(403);
     }
 }
