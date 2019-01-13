@@ -81,6 +81,24 @@ class IndexTest extends TestCase
     /**
      * @test
      */
+    public function an_user_see_appropriate_notification_when_they_dont_have_any_products_to_be_shown()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $this->get('/user/products')
+            ->assertSee(__('You don\'t have any products to be shown.'))
+            ->assertSee(__('Add a product'));
+
+        $this->get('/user/products?archived')
+            ->assertSee(__('You don\'t have any archived products.'))
+            ->assertSee(__('Browse your products'));
+    }
+
+    /**
+     * @test
+     */
     public function an_unauthenticated_user_cannot_access_to_the_user_products_index()
     {
         $this->withExceptionHandling();
@@ -95,7 +113,7 @@ class IndexTest extends TestCase
     public function an_admin_user_cannot_access_to_the_user_products_index()
     {
         $this->withExceptionHandling();
-        
+
         $admin = factory(User::class)
             ->states('admin')->create();
 

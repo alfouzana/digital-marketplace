@@ -5,24 +5,34 @@
 @section('content')
     <div>
         @if(!Request::has('archived'))
-            <a href="{{ url('/vendor/products?archived=1') }}"
-               class="btn btn-outline-secondary float-right mb-3"
+            <a href="{{ url('/user/products?archived=1') }}"
+               class="btn btn-outline-secondary mb-3"
                title="@lang('Archived Products')">
                 <i class="fa fa-archive"></i>
             </a>
         @else
-            <a href="{{ url('/vendor/products') }}"
-               class="btn btn-outline-primary float-right mb-3"
-               title="@lang('Current Products')">
+            <a href="{{ url('/user/products') }}"
+               class="btn btn-outline-primary mb-3"
+               title="@lang('Products')">
                 <i class="fa fa-arrow-left"></i>
             </a>
         @endif
     </div>
     @if($products->isEmpty())
         <div class="alert alert-info" role="alert">
-            @lang('You have not added any products yet.')
-            {{-- TODO: Add the 'new product' url --}}
-            <a href="#">@lang('Add your first product here.')</a>
+            @if(!Request::has('archived')) 
+                @lang('You don\'t have any products to be shown.')
+
+                <a href="#">
+                    @lang('Add a product')
+                </a>
+            @else
+                @lang('You don\'t have any archived products.')
+
+                <a href="{{ url('/user/products') }}">
+                    @lang('Browse your products')
+                </a>
+            @endif
         </div>
     @else
         <div class="table-responsive-lg">
