@@ -68,6 +68,13 @@ class DatabaseSeeder extends Seeder
             'user_id' => $user->id,
         ]);
 
+        // add an archived product
+        $products[] = tap(create_approved_product([
+            'user_id' => $user->id
+        ]), function ($product) {
+            $product->delete();
+        });
+
         collect($products)->each(function ($product) {
             create_product_files($product->id);
         });
