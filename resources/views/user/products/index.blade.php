@@ -41,8 +41,8 @@
                     <tr>
                         <th scope="col">@lang('Title')</th>
                         <th scope="col">@lang('Category')</th>
-                        <th scope="col">@lang('Last Change')</th>
-                        <th scope="col">@lang('Creation')</th>
+                        <th scope="col">@lang('Updated At') <i class="fa fa-caret-down"></i></th>
+                        <th scope="col">@lang('Created At')</th>
                         <th scope="col">@lang('Approval Status')</th>
                         <th scope="col"></th>
                     </tr>

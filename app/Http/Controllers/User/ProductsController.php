@@ -20,7 +20,7 @@ class ProductsController extends Controller
             $query->onlyTrashed();
         }
 
-        $products = $query->paginate();
+        $products = $query->latest('updated_at')->paginate();
 
         return view('user.products.index', compact('products'));
     }
