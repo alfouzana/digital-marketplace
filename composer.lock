@@ -1257,27 +1257,28 @@
         },
         {
             "name": "mtvs/eloquent-approval",
-            "version": "v1.0.1",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mtvs/eloquent-approval.git",
-                "reference": "4ca1bed0aa5e77fc8e61f65564615dad9b7f000a"
+                "reference": "f0f33cec6a686361498cf02812e009af2dd83858"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mtvs/eloquent-approval/zipball/4ca1bed0aa5e77fc8e61f65564615dad9b7f000a",
-                "reference": "4ca1bed0aa5e77fc8e61f65564615dad9b7f000a",
+                "url": "https://api.github.com/repos/mtvs/eloquent-approval/zipball/f0f33cec6a686361498cf02812e009af2dd83858",
+                "reference": "f0f33cec6a686361498cf02812e009af2dd83858",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "~5.5.0",
-                "illuminate/support": "~5.5.0",
+                "illuminate/database": "~5.5.0|~5.6.0|~5.7.0",
+                "illuminate/support": "~5.5.0|~5.6.0|~5.7.0",
                 "php": "^7.0"
             },
             "require-dev": {
-                "orchestra/database": "~3.5",
-                "orchestra/testbench": "~3.5",
-                "phpunit/phpunit": "^6.4"
+                "mockery/mockery": "^1.0",
+                "orchestra/database": "~3.5|~3.6",
+                "orchestra/testbench": "~3.5|~3.6|~3.7",
+                "phpunit/phpunit": "~6.4|^7.0"
             },
             "type": "library",
             "extra": {
@@ -1308,7 +1309,7 @@
                 "eloquent",
                 "laravel"
             ],
-            "time": "2017-12-16T13:00:26+00:00"
+            "time": "2019-01-22T11:05:55+00:00"
         },
         {
             "name": "nanigans/single-table-inheritance",

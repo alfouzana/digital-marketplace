@@ -34,6 +34,11 @@ class Product extends Model implements HasPresenter
         return parent::resolveRouteBinding(Hashids::decode($value));
     }
 
+    public function approvalNotRequired()
+    {
+        return ['deleted_at'];
+    }
+
     public function url()
     {
         return url("/product/{$this->getAttribute('slug')}/{$this->getRouteKey()}");
