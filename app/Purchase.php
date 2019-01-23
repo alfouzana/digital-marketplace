@@ -8,6 +8,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
 
 class Purchase extends Model implements HasPresenter
 {
+    const UPDATED_AT = null;
+    
     public function product()
     {
         return $this->belongsTo(Product::class);
