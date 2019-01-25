@@ -15,17 +15,12 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
 
         $this->cleanDatabase();
-
         $this->cleanStorage();
-
-        $products = create_approved_product([], 20);
-
-        $products->each(function ($product) {
-           create_product_files($product->id);
-        });
 
         $this->createDemoUser();
         $this->createDemoAdmin();
+
+        $this->createProducts();
     }
 
     protected function cleanDatabase()
@@ -78,6 +73,10 @@ class DatabaseSeeder extends Seeder
         collect($products)->each(function ($product) {
             create_product_files($product->id);
         });
+
+        factory(App\Purchase::class, 5)->create([
+            'user_id' => $user->id,
+        ]);
     }
 
     protected function createDemoAdmin()
@@ -87,5 +86,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'rroe@example.com',
             'password' => bcrypt('123'),
         ]);
+    }
+
+    protected function createProducts()
+    {
+        $products = create_approved_product([], 20);
+
+        $products->each(function ($product) {
+           create_product_files($product->id);
+        });
     }
 }

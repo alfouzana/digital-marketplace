@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\User;
 
 use App\Product;
 use App\Purchase;
@@ -24,7 +24,7 @@ class PurchasesController extends Controller
             ->latest('created_at')
             ->paginate();
 
-        return view('customer.purchases.index', compact('purchases'));
+        return view('user.purchases.index', compact('purchases'));
     }
 
     public function store(Request $request)

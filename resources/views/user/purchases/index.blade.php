@@ -6,6 +6,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Product</th>
                 <th>Time <i class="fa fa-caret-down"></i></th>
                 <th>Amount</th>
@@ -15,6 +16,7 @@
         <tbody>
             @foreach($purchases as $purchase)
                 <tr>
+                    <td>{{ $purchase->hashId() }}</td>
                     <td>
                         <a href="{{ $purchase->product->url() }}">
                             {{ $purchase->product->isApproved() ?

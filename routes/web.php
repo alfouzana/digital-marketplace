@@ -41,6 +41,8 @@ Route::group([
         'uses' => 'ProductsController@index'
     ]);
 
+    Route::get('/purchases', 'PurchasesController@index');
+
     Route::group([
         'prefix' => '/new-product'
     ], function () {
@@ -82,7 +84,7 @@ Route::group([
     'middleware' => ['auth',]
 ], function () {
     Route::post('purchases', 'PurchasesController@store');
-    Route::get('purchases', 'PurchasesController@index');
+    
 });
 
 Route::group([
