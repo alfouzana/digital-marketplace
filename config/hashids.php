@@ -44,6 +44,12 @@ return [
             'length' => 10,
         ],
 
+        'purchases' => [
+            'salt' => config('app.key').'.purchases',
+            'length' => 6,
+            'alphabet' => 'abcdefghijklmnopqrstuvwxyz1234567890'
+        ]
+
     ],
 
 ];
