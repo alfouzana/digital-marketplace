@@ -69,6 +69,28 @@ class IndexTest extends TestCase
     /**
      * @test
      */
+    public function an_user_can_see_their_purchased_products_that_have_been_archived()
+    {
+        $user = factory(User::class)->create();
+
+        $purchase = factory(Purchase::class)->create([
+            'user_id' => $user->id,
+            'product_id' => with($product = factory(Product::class)->create([
+                'approval_status' => ApprovalStatuses::APPROVED,
+                'deleted_at' => now(),
+            ]))->id
+        ]);
+
+        $this->actingAs($user);
+
+        $this->get('/user/purchases')
+            ->assertSee($purchase->hashId())
+            ->assertSee($product->title);
+    }
+
+    /**
+     * @test
+     */
     public function an_unauthenticated_user_cannot_visit_the_user_purchases_page()
     {
         $this->withExceptionHandling();
