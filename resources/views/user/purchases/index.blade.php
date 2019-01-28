@@ -1,4 +1,4 @@
-@extends('layouts.customer')
+@extends('user.layout')
 
 @section('title', __('Purchases'))
 
