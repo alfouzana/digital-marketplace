@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Product;
 
 class ProductsController extends Controller
 {
@@ -23,5 +24,20 @@ class ProductsController extends Controller
         $products = $query->latest('updated_at')->paginate();
 
         return view('user.products.index', compact('products'));
+    }
+
+    public function store(Request $request)
+    {
+        // todo: Validate the request
+        
+        $data = array_merge($request->only([
+            'category_id', 'title', 'body', 'price'
+        ]), [
+            'user_id' => auth()->id(),
+        ]);
+
+        Product::create($data);
+
+        return redirect('/user/products');
     }
 }

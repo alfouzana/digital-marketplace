@@ -41,6 +41,8 @@ Route::group([
         'uses' => 'ProductsController@index'
     ]);
 
+    Route::post('/products', 'ProductsController@store');
+
     Route::get('/purchases', 'PurchasesController@index');
 
     Route::group([
