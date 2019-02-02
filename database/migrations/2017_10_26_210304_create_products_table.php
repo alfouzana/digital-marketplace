@@ -24,6 +24,10 @@ class CreateProductsTable extends Migration
 
             $table->decimal('price', 10, 2);
 
+            $table->unsignedInteger('cover_id');
+            $table->unsignedInteger('sample_id');
+            $table->unsignedInteger('file_id');
+
             $table->unsignedInteger('user_id')->index();
 
             $table->unsignedInteger('category_id')->index();

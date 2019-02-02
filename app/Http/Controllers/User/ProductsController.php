@@ -31,6 +31,7 @@ class ProductsController extends Controller
         // todo: Validate the request
         
         $data = array_merge($request->only([
+            'cover_id', 'sample_id', 'file_id',
             'category_id', 'title', 'body', 'price'
         ]), [
             'user_id' => auth()->id(),

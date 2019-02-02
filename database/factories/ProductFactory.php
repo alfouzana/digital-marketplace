@@ -1,11 +1,21 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\File;
 
 /* @var Illuminate\Database\Eloquent\Factory $factory */
 
 $factory->define(App\Product::class, function (Faker $faker) {
     return [
+        'cover_id' => function ($faker) {
+          return factory(File::class, 'cover')->create();
+        },
+        'sample_id' => function () {
+          return factory(File::class, 'sample')->create();
+        },
+        'file_id' => function () {
+          return factory(File::class, 'product_file')->create();
+        },
         'title' => $faker->sentence,
 
         'body' => $faker->paragraph,

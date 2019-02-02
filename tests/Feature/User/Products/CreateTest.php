@@ -23,6 +23,7 @@ class CreateTest extends TestCase
     	$user = factory(User::class)->create();
 
     	$data = array_only(factory(Product::class)->raw(), [
+    		'cover_id', 'sample_id', 'file_id',
     		'category_id', 'title', 'body', 'price',
     	]);
 
