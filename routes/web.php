@@ -43,6 +43,8 @@ Route::group([
 
     Route::post('/products', 'ProductsController@store');
 
+    Route::post('/files', 'FilesController@store');
+
     Route::get('/purchases', 'PurchasesController@index');
 
     Route::group([

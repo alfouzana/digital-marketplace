@@ -20,8 +20,8 @@ class CreateFilesTable extends Migration
             $table->string('assoc');
             $table->string('disk');
             $table->string('path');
-            $table->string('original_name');
-            $table->unsignedInteger('size');
+            $table->string('original_name')->nullable();
+            $table->unsignedInteger('size')->nullable();
         });
     }
 
