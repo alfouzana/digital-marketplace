@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class File extends Model implements HasPresenter
 {
+    const ASSOC_COVER = 'cover';
+    const ASSOC_SAMPLE = 'sample';
+    const ASSOC_PRODUCT = 'product';
+
     protected $guarded = [];
 
     public static function createFromUploadedFile(UploadedFile $file, $attributes = [])
