@@ -15,6 +15,19 @@ class CreateTest extends TestCase
 	use WithFaker;
 	use RefreshDatabase;
 
+	/**
+	 * @test
+	 */
+	public function a_user_can_visit_the_page_that_creates_a_product()
+	{
+		$this->actingAs(
+			factory(User::class)->create()
+		);
+
+		$this->get('/user/products/create')
+			->assertSuccessful();
+	}
+
     /**
      * @test
      */

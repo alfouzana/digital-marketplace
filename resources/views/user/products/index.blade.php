@@ -3,16 +3,22 @@
 @section('title', !Request::has('archived') ? __('My Products') : __('Archived Products'))
 
 @section('content')
-    <div>
+    <div class="mb-3">
+        <a href="{{ url('/user/products/create') }}"
+           class="btn btn-outline-success"
+           title="@lang('Add a product')">
+            <i class="fa fa-plus"></i>    
+        </a>
+
         @if(!Request::has('archived'))
             <a href="{{ url('/user/products?archived=1') }}"
-               class="btn btn-outline-secondary mb-3"
+               class="btn btn-outline-secondary"
                title="@lang('Archived Products')">
                 <i class="fa fa-archive"></i>
             </a>
         @else
             <a href="{{ url('/user/products') }}"
-               class="btn btn-outline-primary mb-3"
+               class="btn btn-outline-primary"
                title="@lang('Products')">
                 <i class="fa fa-arrow-left"></i>
             </a>

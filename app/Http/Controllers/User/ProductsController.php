@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Product;
+use App\Category;
 
 class ProductsController extends Controller
 {
@@ -24,6 +25,20 @@ class ProductsController extends Controller
         $products = $query->latest('updated_at')->paginate();
 
         return view('user.products.index', compact('products'));
+    }
+
+    public function create()
+    {
+        $categories = Category::all();
+
+        $category_options = $categories->pluck('id')
+            ->combine(
+                $categories->pluck('name')
+            )->all();
+
+        $category_options = ['' => __('Please select one')] + $category_options;
+
+        return view('user.products.create', compact('category_options'));
     }
 
     public function store(Request $request)

@@ -41,6 +41,8 @@ Route::group([
         'uses' => 'ProductsController@index'
     ]);
 
+    Route::get('/products/create', 'ProductsController@create');
+
     Route::post('/products', 'ProductsController@store');
 
     Route::post('/files', 'FilesController@store');
