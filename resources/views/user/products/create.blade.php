@@ -12,48 +12,42 @@
 		<div class="col-lg-8">
 			{{ Form::open(['url' => '/user/products'])}}
 				<div class="form-group row">
-					<label for="cover_file"
-						   class="col-lg-4 col-form-label text-lg-right">Cover</label>
-					<div class="col-lg-8">
-						<input type="file" 
-						   id="cover_file"
-						   class="form-control-file"
-						   required="true" 
-						   data-assoc="cover"
-						   data-field-id="cover_id"
-						   onchange="upload(event)">
-						<input type="hidden" id="cover_id" name="cover_id">
-					</div>
+					<label for="cover-file"
+					       class="col-lg-4 col-form-label text-lg-right">@lang('Cover')</label>
+
+			        <div class="col-lg-8">
+						<file-upload assoc="cover"
+									 name="cover_id"
+									 id="cover-file"
+									 upload-text="@lang('Upload')"></file-upload>
+			        </div>
+
 				</div>
 
 				<div class="form-group row">
-					<label for="sample_file"
-						   class="col-lg-4 col-form-label text-lg-right">Sample</label>
-					<div class="col-lg-8">
-						<input type="file" 
-						   id="sample_file"
-						   class="form-control-file"
-						   required="true" 
-						   data-assoc="sample"
-						   data-field-id="sample_id"
-						   onchange="upload(event)">
-						<input type="hidden" id="sample_id" name="sample_id">
-					</div>
+					<label for="sample-file"
+					       class="col-lg-4 col-form-label text-lg-right">@lang('Sample')</label>
+
+			        <div class="col-lg-8">
+						<file-upload assoc="sample"
+							 name="sample_id"
+							 id="sample-file"
+							 upload-text="@lang('Upload')"></file-upload>
+			        </div>
+
 				</div>
 
 				<div class="form-group row">
-					<label for="product_file"
-						   class="col-lg-4 col-form-label text-lg-right">File</label>
-					<div class="col-lg-8">
-						<input type="file" 
-						   id="product_file"
-						   class="form-control-file"
-						   required="true" 
-						   data-assoc="product"
-						   data-field-id="file_id"
-						   onchange="upload(event)">
-						<input type="hidden" id="file_id" name="file_id">
-					</div>
+					<label for="product-file"
+					       class="col-lg-4 col-form-label text-lg-right">@lang('File')</label>
+
+			        <div class="col-lg-8">
+						<file-upload assoc="product"
+							 name="file_id"
+							 id="product-file"
+							 upload-text="@lang('Upload')"></file-upload>
+			        </div>
+
 				</div>
 
 		        <div class="form-group row">
@@ -139,29 +133,4 @@
 			{{ Form::close() }}
 		</div>
 	</div>
-
-	<script type="text/javascript">
-		function upload(event)
-		{
-			debugger;
-
-			let formData = new FormData();
-
-			formData.append('file', event.target.files[0]);
-			formData.append('assoc', event.target.dataset.assoc);
-
-			// let xhr = new XMLHttpRequest;
-
-			// xhr.open('POST', '/user/files', true);
-			// xhr.send(formData);
-
-			axios.post('/user/files', formData).then(function ({data}) {
-				console.log(data);
-
-				let field = document.getElementById(event.target.dataset.fieldId);
-
-				field.value = data.id
-			});
-		}
-	</script>
 @endsection
