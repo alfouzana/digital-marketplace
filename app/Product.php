@@ -61,20 +61,17 @@ class Product extends Model implements HasPresenter
 
     public function cover()
     {
-        return $this->hasOne(File::class)
-            ->where('assoc', 'cover');
+        return $this->belongsTo(File::class);
     }
 
     public function sample()
     {
-        return $this->hasOne(File::class)
-            ->where('assoc', 'sample');
+        return $this->belongsTo(File::class);
     }
 
     public function file()
     {
-        return $this->hasOne(File::class)
-            ->where('assoc', 'product_file');
+        return $this->belongsTo(File::class);
     }
 
     public function category()
