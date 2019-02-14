@@ -16,16 +16,6 @@ class File extends Model implements HasPresenter
 
     protected $guarded = [];
 
-    public static function createFromUploadedFile(UploadedFile $file, $attributes = [])
-    {
-        $attributes = array_merge([
-            'original_name' => $file->getClientOriginalName(),
-            'size' => $file->getSize()
-        ], $attributes);
-
-        return static::create($attributes);
-    }
-
     public function url()
     {
         if ($this->assoc == 'product_file') {

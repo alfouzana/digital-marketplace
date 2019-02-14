@@ -48,40 +48,6 @@ Route::group([
     Route::post('/files', 'FilesController@store');
 
     Route::get('/purchases', 'PurchasesController@index');
-
-    Route::group([
-        'prefix' => '/new-product'
-    ], function () {
-        Route::get('/details', [
-            'uses' => 'NewProductController@showDetailsStep'
-        ]);
-
-        Route::post('/details', [
-            'uses' => 'NewProductController@processDetailsStep'
-        ]);
-
-        Route::get('/cover', [
-            'uses' => 'NewProductController@showCoverStep'
-        ]);
-
-        Route::post('/cover', [
-            'uses' => 'NewProductController@processCoverStep'
-        ]);
-
-        Route::get('/sample', [
-            'uses' => 'NewProductController@showSampleStep'
-        ]);
-
-        Route::post('/sample', 'NewProductController@processSampleStep');
-
-        Route::get('/product-file', 'NewProductController@showProductFileStep');
-        Route::post('/product-file', 'NewProductController@processProductFileStep');
-
-        Route::get('/confirmation', 'NewProductController@showConfirmationStep');
-        Route::post('/confirmation', 'NewProductController@processConfirmationStep');
-
-        Route::get('/download-product-file', 'NewProduct\\DownloadProductFileController@index');
-    });
 });
 
 Route::group([
