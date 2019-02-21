@@ -21,6 +21,14 @@ class ProductsController extends Controller
         return view('admin.products.index', compact('products'));
     }
 
+    public function show($id)
+    {
+        // todo: Fail when not found
+        $product = Product::anyApprovalStatus()->find($id);
+
+        return response()->json($product);
+    }
+
     public function approval($id, Request $request)
     {
     	// todo: fail when not found
