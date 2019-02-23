@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Admin\Products;
 
-use App\Admin;
+use App\User;
 use App\Product;
 use Illuminate\Http\Response;
 use Mtvs\EloquentApproval\ApprovalStatuses;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class IndexingProductsTest extends TestCase
+class IndexTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -29,10 +29,10 @@ class IndexingProductsTest extends TestCase
         ]);
 
         $this->actingAs(
-            factory(Admin::class)->create()
+            factory(User::class)->states('admin')->create()
         );
 
-        $response = $this->get('admin/products');
+        $response = $this->get('/admin/products');
 
         foreach ($products as $product) {
             $response->assertSee($product->title);
@@ -42,7 +42,7 @@ class IndexingProductsTest extends TestCase
     /**
      * @test
      */
-    public function an_admin_user_can_filter_the_index_of_products_for_a_specific_approval_status()
+    public function an_admin_user_can_filter_the_list_of_products_for_a_specific_approval_status()
     {
         $approvalStatuses = [
             ApprovalStatuses::PENDING,
@@ -57,11 +57,11 @@ class IndexingProductsTest extends TestCase
         }
 
         $this->actingAs(
-            factory(Admin::class)->create()
+            factory(User::class)->states('admin')->create()
         );
 
         foreach ($approvalStatuses as $approvalStatus) {
-            $response = $this->get('admin/products?approval_status='.$approvalStatus);
+            $response = $this->get('/admin/products?approval_status='.$approvalStatus);
 
             $productsWithTheApprovalStatus = Product::anyApprovalStatus()
                 ->where('approval_status', $approvalStatus)->get();
@@ -86,7 +86,7 @@ class IndexingProductsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->get('admin/products')
+        $this->get('/admin/products')
             ->assertRedirect('login');
     }
 
@@ -98,10 +98,10 @@ class IndexingProductsTest extends TestCase
         $this->withExceptionHandling();
 
         $this->actingAs(
-            $this->createNonAdminUser()
+            factory(User::class)->create()
         );
 
-        $this->get('admin/products')
+        $this->get('/admin/products')
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }
