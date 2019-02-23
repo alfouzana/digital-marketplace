@@ -62,7 +62,7 @@ Route::group([
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
-    'middleware' => ['auth',]
+    'middleware' => ['auth', 'admin']
 ], function () {
     Route::get('products', 'ProductsController@index');
     Route::get('product/{id}', 'ProductsController@show');
