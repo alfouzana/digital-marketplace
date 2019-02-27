@@ -65,7 +65,7 @@ Route::group([
     'middleware' => ['auth', 'admin']
 ], function () {
     Route::get('products', 'ProductsController@index');
-    Route::get('product/{id}', 'ProductsController@show');
+
     Route::post('product/{id}/approval', 'ProductsController@approval');
 });
 
