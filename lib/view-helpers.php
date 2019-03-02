@@ -3,15 +3,15 @@
 function approval_lang($status)
 {
     if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::PENDING) {
-        return __('Pending');
+        return __('pending');
     }
 
     if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::APPROVED) {
-        return __('Approved');
+        return __('approved');
     }
 
     if ($status === \Mtvs\EloquentApproval\ApprovalStatuses::REJECTED) {
-        return __('Rejected');
+        return __('rejected');
     }
 }
 

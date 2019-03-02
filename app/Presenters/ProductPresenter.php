@@ -42,6 +42,20 @@ class ProductPresenter extends BasePresenter
         return $this->wrappedObject->updated_at->diffForHumans();
     }
 
+    public function deleted_at()
+    {
+        return $this->wrappedObject->deleted_at ? 
+            $this->wrappedObject->deleted_at->diffForHumans():
+            null;
+    }
+
+    public function approval_at()
+    {
+        return $this->wrappedObject->approval_at ? 
+            $this->wrappedObject->approval_at->diffForHumans():
+            null;
+    }
+
     public function approval_status()
     {
         return approval_lang($this->wrappedObject->approval_status);

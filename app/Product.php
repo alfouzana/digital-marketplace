@@ -24,6 +24,11 @@ class Product extends Model implements HasPresenter
         'vendor',
     ];
 
+    protected $dates = [
+        'deleted_at',
+        'approval_at',
+    ];
+
     public function getRouteKey()
     {
         return Hashids::encode(parent::getRouteKey());

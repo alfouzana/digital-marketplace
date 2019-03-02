@@ -7,16 +7,28 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Mtvs\EloquentApproval\ApprovalStatuses;
+use App\Http\Resources\ProductResource;
+use App\Presenters\ProductPresenter;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::anyApprovalStatus()
+        if ($request->wantsJson()) {
+            $products = Product::anyApprovalStatus()
             ->when(\request()->filled('approval_status'), function (Builder $query) {
                 $query->where('approval_status', \request()->input('approval_status'));
             })
             ->paginate();
+
+            return ProductResource::collection(
+                $products->setCollection(
+                    $products->getCollection()->map(function ($product) {
+                        return new ProductPresenter($product);
+                    })
+                )
+            );
+        }
 
         return view('admin.products.index', compact('products'));
     }
@@ -37,5 +49,14 @@ class ProductsController extends Controller
     	else {
     		$product->reject();
     	}
+
+        $presenter = new ProductPresenter($product);
+
+        return response()->json([
+            'approval_status' => $presenter->approval_status,
+            'approval_context' => $presenter->approval_context,
+            'updated_at' => $presenter->updated_at,
+            'approval_at' => $presenter->approval_at,
+        ]);
     }
 }
