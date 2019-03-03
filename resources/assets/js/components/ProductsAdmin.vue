@@ -52,15 +52,11 @@
 
 		data () {
 			return {
-				items: [],
+				items: this.products,
 				showItem: null
 			}
 		},
 
-		created () {
-			axios.get('/admin/products').then(({data}) => {
-				this.items = data.data;
-			});
-		}
+		props: ['products']
 	}
 </script>	

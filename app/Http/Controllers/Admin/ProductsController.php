@@ -14,21 +14,11 @@ class ProductsController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
-            $products = Product::anyApprovalStatus()
-            ->when(\request()->filled('approval_status'), function (Builder $query) {
-                $query->where('approval_status', \request()->input('approval_status'));
+        $products = Product::anyApprovalStatus()
+            ->when($request->filled('approval_status'), function (Builder $query) use ($request) {
+                $query->where('approval_status', $request['approval_status']);
             })
             ->paginate();
-
-            return ProductResource::collection(
-                $products->setCollection(
-                    $products->getCollection()->map(function ($product) {
-                        return new ProductPresenter($product);
-                    })
-                )
-            );
-        }
 
         return view('admin.products.index', compact('products'));
     }
